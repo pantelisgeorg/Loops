@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Loops — Interactive Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #f97316;
+    --accent2: #06b6d4;
+    --accent3: #a78bfa;
+    --green: #22d3a5;
+    --red: #f43f5e;
+    --yellow: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #060d1a;
+  }
+  /* ── LIGHT THEME ── */
+  body.light {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface2: #f1f5f9;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --code-bg: #f1f5f9;
+  }
+  body, body * { transition: background-color .25s, color .25s, border-color .25s; }
+  /* theme toggle button */
+  .theme-toggle {
+    margin-left: auto;
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); cursor: pointer;
+    width: 34px; height: 34px; border-radius: 8px;
+    font-size: 1rem; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--text); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top:0; z-index:100;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    height: 60px;
+  }
+  .logo {
+    font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  nav { display:flex; gap:.25rem; flex-wrap:wrap; }
+  nav button {
+    background: none; border: none; cursor:pointer;
+    color: var(--muted); font-family:'Inter',sans-serif;
+    font-size:.78rem; font-weight:600; letter-spacing:.04em;
+    padding:.35rem .8rem; border-radius:6px;
+    transition: all .2s;
+  }
+  nav button:hover, nav button.active {
+    color: var(--text); background: var(--surface2);
+  }
+  nav button.active { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 5rem 2rem 3rem;
+    max-width: 1100px; margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  .hero-badge {
+    display:inline-block; margin-bottom:1.2rem;
+    background: rgba(249,115,22,.12); border:1px solid rgba(249,115,22,.3);
+    color: var(--accent); font-size:.72rem; font-weight:700;
+    letter-spacing:.12em; text-transform:uppercase;
+    padding:.35rem 1rem; border-radius:999px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600; line-height: 1.25; letter-spacing: -0.5px;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size:1.05rem; max-width:600px; margin:0 auto 2rem; line-height:1.7; }
+  .hero-grid {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .hero-chip {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius:12px; padding:.7rem 1.2rem;
+    font-size:.82rem; font-weight:700;
+    cursor: pointer; transition: all .2s;
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .hero-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  .hero-chip .dot { width:8px;height:8px;border-radius:50%; }
+
+  /* ── MAIN LAYOUT ── */
+  main { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* ── SECTION TITLE ── */
+  .section-head {
+    display:flex; align-items:center; gap:1rem;
+    margin: 3.5rem 0 1.8rem;
+  }
+  .section-head h2 { font-size:1.6rem; font-weight:800; letter-spacing:-1px; }
+  .section-head .line { flex:1; height:1px; background:var(--border); }
+  .section-head .tag {
+    font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    padding:.3rem .8rem; border-radius:6px;
+    background: rgba(6,182,212,.12); color: var(--accent2);
+    border: 1px solid rgba(6,182,212,.25);
+  }
+
+  /* ── LOOP CARDS ── */
+  .loop-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: border-color .3s;
+  }
+  .loop-card:hover { border-color: var(--accent); }
+
+  .card-header {
+    display:flex; align-items:center; gap:1rem;
+    padding:1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; user-select: none;
+  }
+  .card-header .icon {
+    width:38px;height:38px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem; font-weight:900; flex-shrink:0;
+  }
+  .card-header h3 { font-size:1.1rem; font-weight:800; flex:1; }
+  .card-header .badge {
+    font-size:.68rem; font-weight:700; letter-spacing:.06em;
+    padding:.25rem .7rem; border-radius:6px; text-transform:uppercase;
+  }
+  .card-header .chevron { color:var(--muted); transition:.3s; font-size:.9rem; }
+  .card-header.open .chevron { transform: rotate(90deg); }
+
+  .card-body { display:none; padding:1.5rem; }
+  .card-body.open { display:block; }
+
+  .desc { color:var(--muted); line-height:1.7; font-size:.92rem; margin-bottom:1.2rem; font-family:'Inter',sans-serif; }
+
+  /* ── TABS ── */
+  .tabs { display:flex; gap:.4rem; margin-bottom:1rem; flex-wrap:wrap; }
+  .tab-btn {
+    background:none; border:1px solid var(--border); color:var(--muted);
+    font-family:'Inter',sans-serif; font-size:.78rem; font-weight:700;
+    padding:.38rem .9rem; border-radius:8px; cursor:pointer;
+    transition:all .2s;
+  }
+  .tab-btn:hover { color:var(--text); border-color:var(--accent); }
+  .tab-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+  /* Prevent height collapse when switching tabs - stops page-jump scroll */
+  [id$="-tabs"] { min-height: 320px; }
+
+  /* ── CODE BLOCK ── */
+  .code-wrap {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  .code-toolbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:.55rem 1rem; border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.02);
+  }
+  .code-toolbar span { font-size:.72rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+  .copy-btn, .run-btn {
+    background:none; border:1px solid var(--border); cursor:pointer;
+    font-family:'Inter',sans-serif; font-size:.72rem; font-weight:700;
+    padding:.28rem .75rem; border-radius:6px; transition:all .2s;
+    margin-left:.4rem;
+  }
+  .copy-btn { color:var(--muted); }
+  .copy-btn:hover { color:var(--text); border-color:var(--text); }
+  .run-btn { color:var(--green); border-color:rgba(34,211,165,.3); background:rgba(34,211,165,.07); }
+  .run-btn:hover { background:rgba(34,211,165,.18); }
+
+  pre {
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.75;
+  }
+
+  /* Syntax colors */
+  .kw  { color: #60a5fa; font-weight:600; }
+  .tp  { color: #34d399; }
+  .cm  { color: #475569; font-style: italic; }
+  .st  { color: #fb923c; }
+  .nm  { color: #f472b6; }
+  .fn  { color: #a78bfa; }
+  .op  { color: #94a3b8; }
+
+  /* ── OUTPUT ── */
+  .output-box {
+    margin-top: 1rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow:hidden;
+  }
+  .output-title {
+    padding:.5rem 1rem; border-bottom:1px solid var(--border);
+    font-size:.72rem; color:var(--muted); font-family:'JetBrains Mono',monospace;
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .output-title .dot { width:7px;height:7px;border-radius:50%; background:var(--green); }
+  .output-content {
+    padding:1rem 1.4rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.82rem; line-height:1.75;
+    color: var(--green);
+    min-height: 3rem;
+  }
+
+  /* ── TRACER ── */
+  .tracer-panel {
+    margin-top:1rem;
+    border:1px solid rgba(167,139,250,.25);
+    border-radius:12px; overflow:hidden;
+    background: rgba(167,139,250,.04);
+  }
+  .tracer-title {
+    padding:.6rem 1rem; background:rgba(167,139,250,.1);
+    font-size:.76rem; font-weight:700; color:var(--accent3);
+    letter-spacing:.06em; text-transform:uppercase;
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .tracer-controls {
+    padding:.8rem 1rem; display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
+    border-bottom:1px solid rgba(167,139,250,.15);
+  }
+  .tracer-controls button {
+    background:rgba(167,139,250,.12); border:1px solid rgba(167,139,250,.3);
+    color:var(--accent3); font-family:'Inter',sans-serif;
+    font-size:.78rem; font-weight:700; padding:.35rem .9rem; border-radius:8px;
+    cursor:pointer; transition:all .2s;
+  }
+  .tracer-controls button:hover { background:rgba(167,139,250,.25); }
+  .tracer-controls button:disabled { opacity:.35; cursor:not-allowed; }
+  .tracer-controls .speed-label { font-size:.72rem; color:var(--muted); margin-left:.5rem; }
+  .tracer-controls input[type=range] { accent-color:var(--accent3); width:80px; }
+
+  .tracer-body { display:flex; gap:0; flex-wrap:wrap; }
+  .tracer-code-col { flex:1; min-width:200px; border-right:1px solid rgba(167,139,250,.15); }
+  .tracer-code-col pre { padding:.8rem 1rem; font-size:.78rem; line-height:1.9; }
+  .tracer-code-col pre .line { display:block; padding:0 .2rem; border-radius:4px; }
+  .tracer-code-col pre .line.highlight { background:rgba(249,115,22,.18); color:var(--accent); }
+
+  .tracer-state-col { width:220px; padding:.8rem 1rem; min-width:180px; }
+  .tracer-state-col h4 { font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.7rem; }
+  .var-row { display:flex; justify-content:space-between; align-items:center; padding:.3rem .5rem; border-radius:6px; margin-bottom:.3rem; background:rgba(255,255,255,.03); font-family:'JetBrains Mono',monospace; font-size:.8rem; }
+  .var-row .var-name { color:var(--accent2); }
+  .var-row .var-val  { color:var(--yellow); font-weight:600; }
+  .var-row.changed   { background:rgba(249,115,22,.15); }
+
+  .tracer-log {
+    padding:.5rem 1rem .8rem; border-top:1px solid rgba(167,139,250,.15);
+    font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--muted);
+    min-height:2.5rem;
+  }
+  .tracer-log .log-out { color:var(--green); }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table {
+    width:100%; border-collapse:collapse; font-size:.84rem;
+    border-radius:12px; overflow:hidden;
+  }
+  .compare-table th {
+    background:var(--surface2); padding:.75rem 1rem;
+    text-align:left; font-size:.72rem; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    border-bottom:1px solid var(--border);
+  }
+  .compare-table td {
+    padding:.75rem 1rem; border-bottom:1px solid var(--border);
+    vertical-align:top; line-height:1.6;
+  }
+  .compare-table tr:last-child td { border-bottom:none; }
+  .compare-table tr:hover td { background:rgba(255,255,255,.02); }
+  .compare-table td code {
+    font-family:'JetBrains Mono',monospace; font-size:.78rem;
+    background:rgba(255,255,255,.06); padding:.1rem .4rem; border-radius:4px;
+  }
+  .yes { color:var(--green); font-weight:700; }
+  .no  { color:var(--red);   font-weight:700; }
+  .since { font-size:.7rem; background:rgba(249,115,22,.12); color:var(--accent); padding:.15rem .5rem; border-radius:4px; font-weight:700; border:1px solid rgba(249,115,22,.25); }
+
+  /* ── EVOLUTION TIMELINE ── */
+  .timeline { position:relative; padding-left:2rem; }
+  .timeline::before { content:''; position:absolute; left:.5rem; top:0; bottom:0; width:2px; background:linear-gradient(180deg, var(--accent),var(--accent2)); opacity:.3; }
+  .tl-item { position:relative; margin-bottom:2rem; }
+  .tl-dot { position:absolute; left:-1.62rem; top:.25rem; width:14px;height:14px; border-radius:50%; border:2px solid var(--accent); background:var(--bg); }
+  .tl-item:nth-child(even) .tl-dot { border-color:var(--accent2); }
+  .tl-version { font-size:.72rem; font-weight:700; letter-spacing:.08em; color:var(--accent); text-transform:uppercase; margin-bottom:.3rem; }
+  .tl-item:nth-child(even) .tl-version { color:var(--accent2); }
+  .tl-title { font-size:1rem; font-weight:800; margin-bottom:.4rem; }
+  .tl-body { color:var(--muted); font-size:.88rem; line-height:1.7; }
+  .tl-code { margin-top:.8rem; }
+
+  /* ── QUIZ ── */
+  .quiz-q { font-size:1rem; font-weight:700; margin-bottom:1rem; }
+  .quiz-opts { display:flex; flex-direction:column; gap:.5rem; }
+  .quiz-opt {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:10px; padding:.7rem 1rem; cursor:pointer;
+    font-size:.88rem; transition:all .2s; font-family:'Inter',sans-serif;
+  }
+  .quiz-opt:hover { border-color:var(--accent2); color:var(--accent2); }
+  .quiz-opt.correct { border-color:var(--green); background:rgba(34,211,165,.1); color:var(--green); }
+  .quiz-opt.wrong   { border-color:var(--red);   background:rgba(244,63,94,.1);  color:var(--red); }
+  .quiz-feedback { margin-top:.8rem; padding:.7rem 1rem; border-radius:8px; font-size:.88rem; font-weight:600; }
+  .quiz-feedback.correct { background:rgba(34,211,165,.12); color:var(--green); border:1px solid rgba(34,211,165,.3); }
+  .quiz-feedback.wrong   { background:rgba(244,63,94,.12);  color:var(--red);   border:1px solid rgba(244,63,94,.3); }
+  .quiz-next { margin-top:.8rem; }
+
+  /* ── CHEAT SHEET ── */
+  .cheat-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1rem; }
+  .cheat-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:1.2rem; transition:all .2s;
+  }
+  .cheat-card:hover { border-color:var(--accent3); transform:translateY(-2px); }
+  .cheat-card h4 { font-size:.88rem; font-weight:800; margin-bottom:.6rem; color:var(--accent3); }
+  .cheat-card pre { font-size:.76rem; background:var(--code-bg); border-radius:8px; padding:.7rem; }
+
+  /* ── SCROLL FADE-IN ── */
+  .fade-up { opacity:0; transform:translateY(20px); transition: opacity .5s, transform .5s; }
+  .fade-up.visible { opacity:1; transform:none; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:640px) {
+    header { padding:0 1rem; }
+    main { padding: 0 1rem 4rem; }
+    .hero { padding: 3rem 1rem 2rem; }
+    .tracer-state-col { width:100%; border-right:none; border-top:1px solid rgba(167,139,250,.15); }
+  }
+</style>
+</head>
+<body id="top">
+
+<header>
+  <div class="logo" onclick="jumpTo('#top')" style="cursor:pointer">☕ JavaLoops</div>
+  <nav id="main-nav">
+    <button class="active" onclick="jumpTo('#for')">for</button>
+    <button onclick="jumpTo('#while')">while</button>
+    <button onclick="jumpTo('#dowhile')">do-while</button>
+    <button onclick="jumpTo('#enhanced')">enhanced for</button>
+    <button onclick="jumpTo('#modern')">Modern Java</button>
+    <button onclick="jumpTo('#evolution')">Evolution</button>
+    <button onclick="jumpTo('#compare')">Compare</button>
+    <button onclick="jumpTo('#quiz')">Quiz</button>
+    <button onclick="jumpTo('#cheat')">Cheat Sheet</button>
+  </nav>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark theme">🌙</button>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">Interactive Study Guide · Java 1.0 → Java 21</div>
+  <h1>Java <span>Loops</span> — Interactive Study Guide</h1>
+  <p>Explore every loop construct in Java with live code tracing, execution simulation, version history, and quizzes — from classic <code style="color:var(--accent2)">for</code> loops to modern Streams.</p>
+  <div class="hero-grid">
+    <div class="hero-chip" onclick="jumpTo('#for')"><div class="dot" style="background:var(--accent)"></div>for Loop</div>
+    <div class="hero-chip" onclick="jumpTo('#while')"><div class="dot" style="background:var(--accent2)"></div>while Loop</div>
+    <div class="hero-chip" onclick="jumpTo('#dowhile')"><div class="dot" style="background:var(--green)"></div>do-while</div>
+    <div class="hero-chip" onclick="jumpTo('#enhanced')"><div class="dot" style="background:var(--accent3)"></div>Enhanced for</div>
+    <div class="hero-chip" onclick="jumpTo('#modern')"><div class="dot" style="background:var(--yellow)"></div>Streams / forEach</div>
+  </div>
+</section>
+
+<main>
+
+<!-- ════════════════════════════════════════════ FOR LOOP ════ -->
+<div id="for" class="section-head fade-up">
+  <h2>The <code style="color:var(--accent)">for</code> Loop</h2>
+  <div class="line"></div>
+  <div class="tag">Java 1.0+</div>
+</div>
+
+<div class="loop-card fade-up" id="card-for">
+  <div class="card-header open" onclick="toggleCard('card-for')">
+    <div class="icon" style="background:rgba(249,115,22,.15);color:var(--accent)">①</div>
+    <h3>Classic <code>for</code> Loop</h3>
+    <span class="badge" style="background:rgba(249,115,22,.12);color:var(--accent);border:1px solid rgba(249,115,22,.25)">Since Java 1.0</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body open">
+    <p class="desc">The classic <code>for</code> loop is a count-controlled loop with three parts in one line: <strong>initialisation</strong>, <strong>condition</strong>, and <strong>update</strong>. It is the most predictable loop — you know exactly how many times it will iterate before it starts.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-group="grp-for" data-panel="for-basic" data-container="for-tabs">Basic Example</button>
+      <button class="tab-btn" data-group="grp-for" data-panel="for-nested" data-container="for-tabs">Nested Loops</button>
+      <button class="tab-btn" data-group="grp-for" data-panel="for-multi" data-container="for-tabs">Multi-variable</button>
+      <button class="tab-btn" data-group="grp-for" data-panel="for-label" data-container="for-tabs">Labels &amp; Break</button>
+
+    </div>
+
+    <div id="for-tabs">
+      <div id="for-basic" class="tab-panel active">
+        <div class="code-wrap">
+          <div class="code-toolbar">
+            <span>// BasicFor.java</span>
+            <div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-for-basic', this)">▶ Run</button></div>
+          </div>
+<pre><span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">0</span>; i <span class="op">&lt;</span> <span class="nm">5</span>; i<span class="op">++</span>) {
+    System.out.<span class="fn">println</span>(<span class="st">"Iteration: "</span> <span class="op">+</span> i);
+}
+
+<span class="cm">// Counting backwards</span>
+<span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">10</span>; i <span class="op">&gt;=</span> <span class="nm">0</span>; i <span class="op">-=</span> <span class="nm">2</span>) {
+    System.out.<span class="fn">println</span>(<span class="st">"Count: "</span> <span class="op">+</span> i);
+}</pre>
+        </div>
+        <div class="output-box" id="out-for-basic" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">Iteration: 0
+Iteration: 1
+Iteration: 2
+Iteration: 3
+Iteration: 4
+Count: 10
+Count: 8
+Count: 6
+Count: 4
+Count: 2
+Count: 0</div>
+        </div>
+        <div class="tracer-panel" id="tracer-for-basic" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="for-nested" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// NestedFor.java — Multiplication Table</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-for-nested', this)">▶ Run</button></div></div>
+<pre><span class="cm">// 3×3 multiplication table</span>
+<span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">1</span>; i <span class="op">&lt;=</span> <span class="nm">3</span>; i<span class="op">++</span>) {
+    <span class="kw">for</span> (<span class="tp">int</span> j <span class="op">=</span> <span class="nm">1</span>; j <span class="op">&lt;=</span> <span class="nm">3</span>; j<span class="op">++</span>) {
+        System.out.<span class="fn">printf</span>(<span class="st">"%4d"</span>, i <span class="op">*</span> j);
+    }
+    System.out.<span class="fn">println</span>();
+}</pre>
+        </div>
+        <div class="output-box" id="out-for-nested" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">   1   2   3
+   2   4   6
+   3   6   9</div>
+        </div>
+        <div class="tracer-panel" id="tracer-for-nested" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="for-multi" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// MultiVar.java — Multiple init & update</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-for-multi', this)">▶ Run</button></div></div>
+<pre><span class="cm">// Multiple variables in one for loop (Java supports comma operator)</span>
+<span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">0</span>, j <span class="op">=</span> <span class="nm">10</span>; i <span class="op">&lt;</span> j; i<span class="op">++</span>, j<span class="op">--</span>) {
+    System.out.<span class="fn">println</span>(<span class="st">"i="</span> <span class="op">+</span> i <span class="op">+</span> <span class="st">"  j="</span> <span class="op">+</span> j);
+}</pre>
+        </div>
+        <div class="output-box" id="out-for-multi" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">i=0  j=10
+i=1  j=9
+i=2  j=8
+i=3  j=7
+i=4  j=6</div>
+        </div>
+        <div class="tracer-panel" id="tracer-for-multi" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="for-label" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// LabelBreak.java — Labeled break/continue</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-for-label', this)">▶ Run</button></div></div>
+<pre><span class="cm">// Labels allow break/continue to target outer loops</span>
+<span class="fn">outer</span>:
+<span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">0</span>; i <span class="op">&lt;</span> <span class="nm">3</span>; i<span class="op">++</span>) {
+    <span class="kw">for</span> (<span class="tp">int</span> j <span class="op">=</span> <span class="nm">0</span>; j <span class="op">&lt;</span> <span class="nm">3</span>; j<span class="op">++</span>) {
+        <span class="kw">if</span> (i <span class="op">==</span> <span class="nm">1</span> <span class="op">&amp;&amp;</span> j <span class="op">==</span> <span class="nm">1</span>) {
+            <span class="kw">break</span> <span class="fn">outer</span>; <span class="cm">// exits BOTH loops</span>
+        }
+        System.out.<span class="fn">println</span>(<span class="st">"["</span> <span class="op">+</span> i <span class="op">+</span> <span class="st">","</span> <span class="op">+</span> j <span class="op">+</span> <span class="st">"]"</span>);
+    }
+}
+System.out.<span class="fn">println</span>(<span class="st">"Exited outer loop"</span>);</pre>
+        </div>
+        <div class="output-box" id="out-for-label" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">[0,0]
+[0,1]
+[0,2]
+[1,0]
+Exited outer loop</div>
+        </div>
+        <div class="tracer-panel" id="tracer-for-label" style="margin-top:.5rem"></div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ WHILE ════ -->
+<div id="while" class="section-head fade-up">
+  <h2>The <code style="color:var(--accent2)">while</code> Loop</h2>
+  <div class="line"></div>
+  <div class="tag">Java 1.0+</div>
+</div>
+
+<div class="loop-card fade-up" id="card-while">
+  <div class="card-header open" onclick="toggleCard('card-while')">
+    <div class="icon" style="background:rgba(6,182,212,.15);color:var(--accent2)">②</div>
+    <h3>Classic <code>while</code> Loop</h3>
+    <span class="badge" style="background:rgba(6,182,212,.12);color:var(--accent2);border:1px solid rgba(6,182,212,.25)">Since Java 1.0</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body open">
+    <p class="desc">The <code>while</code> loop tests its condition <strong>before</strong> each iteration — if the condition is false from the start, the body never executes. Ideal when the number of iterations is not known in advance.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-group="grp-while" data-panel="while-basic" data-container="while-tabs">Basic Example</button>
+      <button class="tab-btn" data-group="grp-while" data-panel="while-input" data-container="while-tabs">Sentinel Loop</button>
+      <button class="tab-btn" data-group="grp-while" data-panel="while-infinite" data-container="while-tabs">Infinite + Break</button>
+
+    </div>
+
+    <div id="while-tabs">
+      <div id="while-basic" class="tab-panel active">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// BasicWhile.java</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-while-basic', this)">▶ Run</button></div></div>
+<pre><span class="tp">int</span> count <span class="op">=</span> <span class="nm">1</span>;
+<span class="kw">while</span> (count <span class="op">&lt;=</span> <span class="nm">5</span>) {
+    System.out.<span class="fn">println</span>(<span class="st">"Count: "</span> <span class="op">+</span> count);
+    count<span class="op">++</span>;
+}
+System.out.<span class="fn">println</span>(<span class="st">"Loop finished. count = "</span> <span class="op">+</span> count);</pre>
+        </div>
+        <div class="output-box" id="out-while-basic" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">Count: 1
+Count: 2
+Count: 3
+Count: 4
+Count: 5
+Loop finished. count = 6</div>
+        </div>
+        <div class="tracer-panel" id="tracer-while-basic" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="while-input" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// Sentinel.java — loop until special value</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-while-input', this)">▶ Run</button></div></div>
+<pre><span class="cm">// Classic "sentinel value" pattern</span>
+Scanner scanner <span class="op">=</span> <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+<span class="tp">int</span> sum <span class="op">=</span> <span class="nm">0</span>;
+<span class="tp">int</span> input <span class="op">=</span> scanner.<span class="fn">nextInt</span>(); <span class="cm">// prime the pump</span>
+
+<span class="kw">while</span> (input <span class="op">!=</span> <span class="nm">-1</span>) {       <span class="cm">// -1 is sentinel</span>
+    sum <span class="op">+=</span> input;
+    input <span class="op">=</span> scanner.<span class="fn">nextInt</span>();
+}
+System.out.<span class="fn">println</span>(<span class="st">"Sum = "</span> <span class="op">+</span> sum);</pre>
+        </div>
+        <div class="output-box" id="out-while-input" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output — (input: 3, 7, 2, -1)</div>
+          <div class="output-content">Sum = 12</div>
+        </div>
+        <div class="tracer-panel" id="tracer-while-input" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="while-infinite" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// InfiniteBreak.java</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-while-infinite', this)">▶ Run</button></div></div>
+<pre><span class="tp">int</span> n <span class="op">=</span> <span class="nm">1</span>;
+<span class="kw">while</span> (<span class="kw">true</span>) {       <span class="cm">// deliberately infinite</span>
+    System.out.<span class="fn">println</span>(n);
+    <span class="kw">if</span> (n <span class="op">==</span> <span class="nm">4</span>) <span class="kw">break</span>; <span class="cm">// explicit exit</span>
+    n<span class="op">++</span>;
+}</pre>
+        </div>
+        <div class="output-box" id="out-while-infinite" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">1
+2
+3
+4</div>
+        </div>
+        <div class="tracer-panel" id="tracer-while-infinite" style="margin-top:.5rem"></div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ DO-WHILE ════ -->
+<div id="dowhile" class="section-head fade-up">
+  <h2>The <code style="color:var(--green)">do-while</code> Loop</h2>
+  <div class="line"></div>
+  <div class="tag">Java 1.0+</div>
+</div>
+
+<div class="loop-card fade-up" id="card-dowhile">
+  <div class="card-header open" onclick="toggleCard('card-dowhile')">
+    <div class="icon" style="background:rgba(34,211,165,.15);color:var(--green)">③</div>
+    <h3>Classic <code>do-while</code> Loop</h3>
+    <span class="badge" style="background:rgba(34,211,165,.12);color:var(--green);border:1px solid rgba(34,211,165,.25)">Since Java 1.0</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body open">
+    <p class="desc">The <code>do-while</code> loop executes the body <strong>at least once</strong> because the condition is tested <em>after</em> each iteration. Perfect for menu-driven programs, input validation, and retry logic.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-group="grp-dw" data-panel="dw-basic" data-container="dw-tabs">Basic Example</button>
+      <button class="tab-btn" data-group="grp-dw" data-panel="dw-menu" data-container="dw-tabs">Menu Pattern</button>
+
+    </div>
+
+    <div id="dw-tabs">
+      <div id="dw-basic" class="tab-panel active">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// BasicDoWhile.java</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-dw-basic', this)">▶ Run</button></div></div>
+<pre><span class="tp">int</span> num <span class="op">=</span> <span class="nm">1</span>;
+<span class="kw">do</span> {
+    System.out.<span class="fn">println</span>(<span class="st">"Value: "</span> <span class="op">+</span> num);
+    num<span class="op">++</span>;
+} <span class="kw">while</span> (num <span class="op">&lt;=</span> <span class="nm">3</span>);
+
+<span class="cm">// Even when condition is false initially, runs once:</span>
+<span class="tp">int</span> x <span class="op">=</span> <span class="nm">99</span>;
+<span class="kw">do</span> {
+    System.out.<span class="fn">println</span>(<span class="st">"Runs once: x="</span> <span class="op">+</span> x);
+} <span class="kw">while</span> (x <span class="op">&lt;</span> <span class="nm">10</span>); <span class="cm">// false! but body ran once</span></pre>
+        </div>
+        <div class="output-box" id="out-dw-basic" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">Value: 1
+Value: 2
+Value: 3
+Runs once: x=99</div>
+        </div>
+        <div class="tracer-panel" id="tracer-dw-basic" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="dw-menu" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// MenuDriven.java — input validation pattern</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-dw-menu', this)">▶ Run</button></div></div>
+<pre>Scanner sc <span class="op">=</span> <span class="kw">new</span> <span class="fn">Scanner</span>(System.in);
+<span class="tp">int</span> choice;
+
+<span class="kw">do</span> {
+    System.out.<span class="fn">println</span>(<span class="st">"1. Start  2. Help  3. Exit"</span>);
+    System.out.<span class="fn">print</span>(<span class="st">"Enter choice: "</span>);
+    choice <span class="op">=</span> sc.<span class="fn">nextInt</span>();
+
+    <span class="kw">if</span> (choice <span class="op">&lt;</span> <span class="nm">1</span> <span class="op">||</span> choice <span class="op">&gt;</span> <span class="nm">3</span>) {
+        System.out.<span class="fn">println</span>(<span class="st">"Invalid. Try again."</span>);
+    }
+} <span class="kw">while</span> (choice <span class="op">!=</span> <span class="nm">3</span>);
+
+System.out.<span class="fn">println</span>(<span class="st">"Goodbye!"</span>);</pre>
+        </div>
+        <div class="output-box" id="out-dw-menu" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output — (input: 5, 2, 3)</div>
+          <div class="output-content">1. Start  2. Help  3. Exit
+Enter choice: 5
+Invalid. Try again.
+1. Start  2. Help  3. Exit
+Enter choice: 2
+1. Start  2. Help  3. Exit
+Enter choice: 3
+Goodbye!</div>
+        </div>
+        <div class="tracer-panel" id="tracer-dw-menu" style="margin-top:.5rem"></div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ ENHANCED FOR ════ -->
+<div id="enhanced" class="section-head fade-up">
+  <h2>Enhanced <code style="color:var(--accent3)">for-each</code> Loop</h2>
+  <div class="line"></div>
+  <div class="tag">Java 5 (2004)+</div>
+</div>
+
+<div class="loop-card fade-up" id="card-enhanced">
+  <div class="card-header open" onclick="toggleCard('card-enhanced')">
+    <div class="icon" style="background:rgba(167,139,250,.15);color:var(--accent3)">④</div>
+    <h3>Enhanced <code>for</code> (for-each)</h3>
+    <span class="badge" style="background:rgba(167,139,250,.12);color:var(--accent3);border:1px solid rgba(167,139,250,.25)">Since Java 5 · JSR-201</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body open">
+    <p class="desc">Introduced in <strong>Java 5 (2004)</strong> as part of JSR-201, the enhanced <code>for</code> loop cleanly iterates over arrays and any <code>Iterable</code> without managing an index. It compiles to an iterator under the hood for collections.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-group="grp-ef" data-panel="ef-array" data-container="ef-tabs">Arrays</button>
+      <button class="tab-btn" data-group="grp-ef" data-panel="ef-list" data-container="ef-tabs">Collections</button>
+      <button class="tab-btn" data-group="grp-ef" data-panel="ef-map" data-container="ef-tabs">Map Iteration</button>
+
+    </div>
+
+    <div id="ef-tabs">
+      <div id="ef-array" class="tab-panel active">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// ForEachArray.java</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-ef-array', this)">▶ Run</button></div></div>
+<pre><span class="tp">int</span>[] nums <span class="op">=</span> {<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>};
+
+<span class="cm">// Before Java 5 (classic for):</span>
+<span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">0</span>; i <span class="op">&lt;</span> nums.length; i<span class="op">++</span>) {
+    System.out.<span class="fn">println</span>(nums[i]);
+}
+
+<span class="cm">// Since Java 5 (enhanced for) — cleaner, safer:</span>
+<span class="kw">for</span> (<span class="tp">int</span> n : nums) {
+    System.out.<span class="fn">println</span>(n);
+}</pre>
+        </div>
+        <div class="output-box" id="out-ef-array" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">10
+20
+30
+40
+50</div>
+        </div>
+        <div class="tracer-panel" id="tracer-ef-array" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="ef-list" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// ForEachList.java</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-ef-list', this)">▶ Run</button></div></div>
+<pre>List&lt;String&gt; fruits <span class="op">=</span> List.<span class="fn">of</span>(<span class="st">"Apple"</span>, <span class="st">"Banana"</span>, <span class="st">"Cherry"</span>);
+
+<span class="kw">for</span> (String fruit : fruits) {
+    System.out.<span class="fn">println</span>(fruit.<span class="fn">toUpperCase</span>());
+}</pre>
+        </div>
+        <div class="output-box" id="out-ef-list" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">APPLE
+BANANA
+CHERRY</div>
+        </div>
+        <div class="tracer-panel" id="tracer-ef-list" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="ef-map" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// ForEachMap.java</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-ef-map', this)">▶ Run</button></div></div>
+<pre>Map&lt;String,Integer&gt; scores <span class="op">=</span> Map.<span class="fn">of</span>(
+    <span class="st">"Alice"</span>, <span class="nm">95</span>, <span class="st">"Bob"</span>, <span class="nm">82</span>, <span class="st">"Carol"</span>, <span class="nm">90</span>
+);
+
+<span class="cm">// Iterate entry set with for-each</span>
+<span class="kw">for</span> (Map.Entry&lt;String,Integer&gt; e : scores.<span class="fn">entrySet</span>()) {
+    System.out.<span class="fn">printf</span>(<span class="st">"%s → %d%n"</span>, e.<span class="fn">getKey</span>(), e.<span class="fn">getValue</span>());
+}</pre>
+        </div>
+        <div class="output-box" id="out-ef-map" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">Alice → 95
+Bob → 82
+Carol → 90</div>
+        </div>
+        <div class="tracer-panel" id="tracer-ef-map" style="margin-top:.5rem"></div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ MODERN ════ -->
+<div id="modern" class="section-head fade-up">
+  <h2>Modern Java Iteration</h2>
+  <div class="line"></div>
+  <div class="tag">Java 8–21</div>
+</div>
+
+<div class="loop-card fade-up" id="card-modern">
+  <div class="card-header open" onclick="toggleCard('card-modern')">
+    <div class="icon" style="background:rgba(251,191,36,.15);color:var(--yellow)">⑤</div>
+    <h3>Streams, forEach & Virtual Threads</h3>
+    <span class="badge" style="background:rgba(251,191,36,.12);color:var(--yellow);border:1px solid rgba(251,191,36,.25)">Java 8–21</span>
+    <span class="chevron">▶</span>
+  </div>
+  <div class="card-body open">
+    <p class="desc">Java 8 (2014) revolutionised iteration with the <strong>Streams API</strong> and lambda expressions. Java 9–21 added further enhancements. These functional-style loops enable parallel processing, filtering, and mapping without explicit loop constructs.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-group="grp-mod" data-panel="mod-foreach" data-container="mod-tabs">forEach (Java 8)</button>
+      <button class="tab-btn" data-group="grp-mod" data-panel="mod-stream" data-container="mod-tabs">Stream pipeline</button>
+      <button class="tab-btn" data-group="grp-mod" data-panel="mod-intstream" data-container="mod-tabs">IntStream.range</button>
+      <button class="tab-btn" data-group="grp-mod" data-panel="mod-parallel" data-container="mod-tabs">Parallel Streams</button>
+      <button class="tab-btn" data-group="grp-mod" data-panel="mod-records" data-container="mod-tabs">Pattern (Java 21)</button>
+    </div>
+
+    <div id="mod-tabs">
+      <div id="mod-foreach" class="tab-panel active">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// ForEachLambda.java — Java 8+</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-mod-foreach', this)">▶ Run</button></div></div>
+<pre><span class="cm">// Arrays.asList() works in Java 8+; List.of() requires Java 9+</span>
+List&lt;String&gt; names <span class="op">=</span> Arrays.<span class="fn">asList</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>);
+
+<span class="cm">// Lambda forEach — Java 8+</span>
+names.<span class="fn">forEach</span>(name <span class="op">-&gt;</span> System.out.<span class="fn">println</span>(<span class="st">"Hello, "</span> <span class="op">+</span> name));
+
+<span class="cm">// Method reference — even shorter, same result</span>
+names.<span class="fn">forEach</span>(System.out<span class="op">::</span>println);</pre>
+        </div>
+        <div class="output-box" id="out-mod-foreach" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content"><span style="color:var(--muted);font-size:.75rem">// forEach with lambda:</span>
+Hello, Alice
+Hello, Bob
+Hello, Carol
+<span style="color:var(--muted);font-size:.75rem">// forEach with method reference:</span>
+Alice
+Bob
+Carol</div>
+        </div>
+        <div class="tracer-panel" id="tracer-mod-foreach" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="mod-stream" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// StreamPipeline.java — Java 8+</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-mod-stream', this)">▶ Run</button></div></div>
+<pre>List&lt;Integer&gt; numbers <span class="op">=</span> List.<span class="fn">of</span>(<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">7</span>,<span class="nm">8</span>,<span class="nm">9</span>,<span class="nm">10</span>);
+
+<span class="cm">// filter → map → collect</span>
+List&lt;Integer&gt; result <span class="op">=</span> numbers.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(n <span class="op">-&gt;</span> n <span class="op">%</span> <span class="nm">2</span> <span class="op">==</span> <span class="nm">0</span>)   <span class="cm">// keep evens</span>
+    .<span class="fn">map</span>(n <span class="op">-&gt;</span> n <span class="op">*</span> n)             <span class="cm">// square them</span>
+    .<span class="fn">collect</span>(Collectors.<span class="fn">toList</span>());
+
+System.out.<span class="fn">println</span>(result);
+
+<span class="cm">// Sum with reduce</span>
+<span class="tp">int</span> sum <span class="op">=</span> numbers.<span class="fn">stream</span>()
+    .<span class="fn">reduce</span>(<span class="nm">0</span>, Integer<span class="op">::</span>sum);
+System.out.<span class="fn">println</span>(<span class="st">"Sum = "</span> <span class="op">+</span> sum);</pre>
+        </div>
+        <div class="output-box" id="out-mod-stream" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">[4, 16, 36, 64, 100]
+Sum = 55</div>
+        </div>
+        <div class="tracer-panel" id="tracer-mod-stream" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="mod-intstream" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// IntStreamRange.java — Java 8+</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-mod-intstream', this)">▶ Run</button></div></div>
+<pre><span class="cm">// IntStream.range replaces index-based for loops functionally</span>
+IntStream.<span class="fn">range</span>(<span class="nm">0</span>, <span class="nm">5</span>)
+    .<span class="fn">forEach</span>(i <span class="op">-&gt;</span> System.out.<span class="fn">println</span>(<span class="st">"i = "</span> <span class="op">+</span> i));
+
+<span class="cm">// rangeClosed includes upper bound</span>
+<span class="tp">int</span> sumOfFirst10 <span class="op">=</span> IntStream.<span class="fn">rangeClosed</span>(<span class="nm">1</span>, <span class="nm">10</span>)
+    .<span class="fn">sum</span>();
+System.out.<span class="fn">println</span>(<span class="st">"Sum 1-10: "</span> <span class="op">+</span> sumOfFirst10);</pre>
+        </div>
+        <div class="output-box" id="out-mod-intstream" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">i = 0
+i = 1
+i = 2
+i = 3
+i = 4
+Sum 1-10: 55</div>
+        </div>
+        <div class="tracer-panel" id="tracer-mod-intstream" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="mod-parallel" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// ParallelStream.java — Java 8+</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-mod-parallel', this)">▶ Run</button></div></div>
+<pre><span class="cm">// parallelStream() automatically uses ForkJoinPool</span>
+List&lt;Integer&gt; bigList <span class="op">=</span> IntStream
+    .<span class="fn">rangeClosed</span>(<span class="nm">1</span>, <span class="nm">1_000_000</span>)
+    .<span class="fn">boxed</span>()
+    .<span class="fn">collect</span>(Collectors.<span class="fn">toList</span>());
+
+<span class="tp">long</span> count <span class="op">=</span> bigList.<span class="fn">parallelStream</span>()
+    .<span class="fn">filter</span>(n <span class="op">-&gt;</span> n <span class="op">%</span> <span class="nm">7</span> <span class="op">==</span> <span class="nm">0</span>)
+    .<span class="fn">count</span>();
+
+System.out.<span class="fn">println</span>(<span class="st">"Divisible by 7: "</span> <span class="op">+</span> count);
+<span class="cm">// Note: order is not guaranteed in parallel!</span></pre>
+        </div>
+        <div class="output-box" id="out-mod-parallel" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">Divisible by 7: 142857</div>
+        </div>
+        <div class="tracer-panel" id="tracer-mod-parallel" style="margin-top:.5rem"></div>
+      </div>
+
+      <div id="mod-records" class="tab-panel">
+        <div class="code-wrap">
+          <div class="code-toolbar"><span>// PatternLoop.java — Java 21 pattern matching</span><div><button class="copy-btn" onclick="copyCode(this)">Copy</button><button class="run-btn" onclick="showOutput('out-mod-records', this)">▶ Run</button></div></div>
+<pre><span class="cm">// Java 21: Sequenced Collections + pattern matching in switch</span>
+List&lt;Object&gt; mixed <span class="op">=</span> List.<span class="fn">of</span>(<span class="nm">42</span>, <span class="st">"hello"</span>, <span class="nm">3.14</span>, <span class="kw">true</span>);
+
+<span class="kw">for</span> (Object obj : mixed) {
+    String desc <span class="op">=</span> <span class="kw">switch</span> (obj) {   <span class="cm">// Java 21 switch expression</span>
+        <span class="kw">case</span> Integer i <span class="op">-&gt;</span> <span class="st">"Int: "</span> <span class="op">+</span> i;
+        <span class="kw">case</span> String s  <span class="op">-&gt;</span> <span class="st">"Str: "</span> <span class="op">+</span> s;
+        <span class="kw">case</span> Double d  <span class="op">-&gt;</span> <span class="st">"Dbl: "</span> <span class="op">+</span> d;
+        <span class="kw">default</span>        <span class="op">-&gt;</span> <span class="st">"Other: "</span> <span class="op">+</span> obj;
+    };
+    System.out.<span class="fn">println</span>(desc);
+}</pre>
+        </div>
+        <div class="output-box" id="out-mod-records" style="display:none">
+          <div class="output-title"><div class="dot"></div> Console Output</div>
+          <div class="output-content">Int: 42
+Str: hello
+Dbl: 3.14
+Other: true</div>
+        </div>
+        <div class="tracer-panel" id="tracer-mod-records" style="margin-top:.5rem"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ EVOLUTION ════ -->
+<div id="evolution" class="section-head fade-up">
+  <h2>Language Evolution</h2>
+  <div class="line"></div>
+  <div class="tag">Java 1.0 → 21</div>
+</div>
+
+<div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;">
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-version">Java 1.0 — 1996</div>
+      <div class="tl-title">Foundation Loops: <code>for</code>, <code>while</code>, <code>do-while</code></div>
+      <div class="tl-body">All three classic C-style loops were present from day one. The <code>for</code> loop syntax came directly from C. Labels for <code>break</code>/<code>continue</code> were also included, allowing early multi-level loop exits.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-version">Java 5 — 2004 · JSR-201</div>
+      <div class="tl-title">Enhanced <code>for-each</code> Loop</div>
+      <div class="tl-body">The biggest loop improvement until Java 8. The enhanced <code>for</code> eliminated boilerplate index management and worked with any <code>Iterable</code>. It compiled down to an iterator internally, hiding <code>ConcurrentModificationException</code> risks from novices.</div>
+      <div class="tl-code">
+        <div class="code-wrap"><pre><span class="cm">// Old (Java 1.0–4)</span>
+<span class="kw">for</span> (<span class="tp">int</span> i <span class="op">=</span> <span class="nm">0</span>; i <span class="op">&lt;</span> list.<span class="fn">size</span>(); i<span class="op">++</span>) { ... }
+
+<span class="cm">// New (Java 5+)</span>
+<span class="kw">for</span> (String s : list) { ... }</pre></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-version">Java 8 — 2014 · JSR-335</div>
+      <div class="tl-title">Streams API, Lambdas & <code>forEach</code></div>
+      <div class="tl-body">A paradigm shift. Lambdas (<code>-&gt;</code>) and the Streams API enabled functional-style iteration. <code>Collection.forEach()</code>, <code>stream().filter().map()</code>, <code>IntStream.range()</code>, parallel streams — all arrived together. Method references (<code>::</code>) shortened code further.</div>
+      <div class="tl-code">
+        <div class="code-wrap"><pre><span class="cm">// Declarative, chainable, optionally parallel</span>
+list.<span class="fn">stream</span>().<span class="fn">filter</span>(x <span class="op">-&gt;</span> x <span class="op">&gt;</span> <span class="nm">0</span>).<span class="fn">forEach</span>(System.out<span class="op">::</span>println);</pre></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-version">Java 9 — 2017</div>
+      <div class="tl-title"><code>Stream.iterate</code> with predicate & <code>takeWhile</code>/<code>dropWhile</code></div>
+      <div class="tl-body"><code>Stream.iterate(seed, hasNext, next)</code> added a while-loop-like predicate to stop generation. <code>takeWhile()</code> and <code>dropWhile()</code> enabled clean lazy stream slicing without sentinel values.</div>
+      <div class="tl-code">
+        <div class="code-wrap"><pre><span class="cm">// Java 9: finite iterate</span>
+Stream.<span class="fn">iterate</span>(<span class="nm">0</span>, i <span class="op">-&gt;</span> i <span class="op">&lt;</span> <span class="nm">5</span>, i <span class="op">-&gt;</span> i <span class="op">+</span> <span class="nm">1</span>)
+      .<span class="fn">forEach</span>(System.out<span class="op">::</span>println);</pre></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-version">Java 14–16 — 2020–2021</div>
+      <div class="tl-title">Records & <code>instanceof</code> Pattern Matching</div>
+      <div class="tl-body">Records (Java 16) are compact data carriers iterated naturally with for-each or streams. <code>instanceof</code> pattern matching (Java 16) simplifies type checking inside loops without explicit casts.</div>
+      <div class="tl-code">
+        <div class="code-wrap"><pre><span class="kw">for</span> (Object obj : shapes) {
+    <span class="kw">if</span> (obj <span class="kw">instanceof</span> Circle c) { <span class="cm">// Java 16</span>
+        System.out.<span class="fn">println</span>(c.<span class="fn">radius</span>());
+    }
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-version">Java 21 — 2023 · LTS</div>
+      <div class="tl-title">Sequenced Collections, Pattern Matching in <code>switch</code>, Virtual Threads</div>
+      <div class="tl-body">Java 21 added <strong>Sequenced Collections</strong> (consistent first/last access in any <code>Collection</code>). <strong>Pattern matching in switch</strong> allows type dispatch inside loops with no casts. <strong>Virtual threads</strong> (Project Loom) make concurrent loop-like workloads trivially scalable.</div>
+      <div class="tl-code">
+        <div class="code-wrap"><pre><span class="cm">// Java 21 — switch + pattern in for</span>
+<span class="kw">for</span> (Shape s : shapes) {
+    <span class="kw">switch</span> (s) {
+        <span class="kw">case</span> Circle c    <span class="op">-&gt;</span> System.out.<span class="fn">println</span>(<span class="st">"Circle r="</span> <span class="op">+</span> c.<span class="fn">r</span>());
+        <span class="kw">case</span> Rectangle r <span class="op">-&gt;</span> System.out.<span class="fn">println</span>(<span class="st">"Rect "</span> <span class="op">+</span> r.<span class="fn">w</span>() <span class="op">+</span> <span class="st">"x"</span> <span class="op">+</span> r.<span class="fn">h</span>());
+        <span class="kw">default</span>          <span class="op">-&gt;</span> System.out.<span class="fn">println</span>(<span class="st">"Unknown"</span>);
+    }
+}</pre></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ COMPARISON ════ -->
+<div id="compare" class="section-head fade-up">
+  <h2>Loop Comparison</h2>
+  <div class="line"></div>
+  <div class="tag">At a Glance</div>
+</div>
+
+<div class="fade-up" style="overflow-x:auto;border-radius:14px;border:1px solid var(--border);">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Loop Type</th>
+        <th>Since</th>
+        <th>Condition checked</th>
+        <th>Min Executions</th>
+        <th>Index access</th>
+        <th>Works on Iterable</th>
+        <th>Best for</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>for</strong></td>
+        <td><span class="since">1.0</span></td>
+        <td>Before each iteration</td>
+        <td>0</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="no">✗</span></td>
+        <td>Known count, index needed</td>
+      </tr>
+      <tr>
+        <td><strong>while</strong></td>
+        <td><span class="since">1.0</span></td>
+        <td>Before each iteration</td>
+        <td>0</td>
+        <td>Manual</td>
+        <td><span class="no">✗</span></td>
+        <td>Unknown count, condition-driven</td>
+      </tr>
+      <tr>
+        <td><strong>do-while</strong></td>
+        <td><span class="since">1.0</span></td>
+        <td>After each iteration</td>
+        <td><strong>1</strong></td>
+        <td>Manual</td>
+        <td><span class="no">✗</span></td>
+        <td>Menu loops, input validation</td>
+      </tr>
+      <tr>
+        <td><strong>for-each</strong></td>
+        <td><span class="since">5</span></td>
+        <td>Iterator-based</td>
+        <td>0</td>
+        <td><span class="no">✗</span></td>
+        <td><span class="yes">✓</span></td>
+        <td>Clean collection traversal</td>
+      </tr>
+      <tr>
+        <td><strong>forEach (lambda)</strong></td>
+        <td><span class="since">8</span></td>
+        <td>Internal iterator</td>
+        <td>0</td>
+        <td><span class="no">✗</span></td>
+        <td><span class="yes">✓</span></td>
+        <td>Functional style, method chains</td>
+      </tr>
+      <tr>
+        <td><strong>Stream.iterate</strong></td>
+        <td><span class="since">8/9</span></td>
+        <td>Predicate (Java 9)</td>
+        <td>0</td>
+        <td>Via index param</td>
+        <td><span class="yes">✓</span></td>
+        <td>Functional infinite/finite sequences</td>
+      </tr>
+      <tr>
+        <td><strong>parallelStream</strong></td>
+        <td><span class="since">8</span></td>
+        <td>Internal iterator</td>
+        <td>0</td>
+        <td><span class="no">✗</span></td>
+        <td><span class="yes">✓</span></td>
+        <td>Large datasets, CPU-bound work</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ════════════════════════════════════════════ QUIZ ════ -->
+<div id="quiz" class="section-head fade-up">
+  <h2>Quick Quiz</h2>
+  <div class="line"></div>
+  <div class="tag">Test Yourself</div>
+</div>
+
+<div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;" id="quiz-container">
+</div>
+
+<!-- ════════════════════════════════════════════ CHEAT SHEET ════ -->
+<div id="cheat" class="section-head fade-up">
+  <h2>Cheat Sheet</h2>
+  <div class="line"></div>
+  <div class="tag">Quick Reference</div>
+</div>
+
+<div class="cheat-grid fade-up">
+  <div class="cheat-card">
+    <h4>Classic for</h4>
+    <div class="code-wrap"><pre><span class="kw">for</span> (<span class="tp">int</span> i<span class="op">=</span><span class="nm">0</span>; i<span class="op">&lt;</span>n; i<span class="op">++</span>) {
+    <span class="cm">// body</span>
+}</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>while</h4>
+    <div class="code-wrap"><pre><span class="kw">while</span> (condition) {
+    <span class="cm">// body</span>
+}</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>do-while</h4>
+    <div class="code-wrap"><pre><span class="kw">do</span> {
+    <span class="cm">// body (runs ≥1)</span>
+} <span class="kw">while</span> (condition);</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>for-each (Java 5)</h4>
+    <div class="code-wrap"><pre><span class="kw">for</span> (Type x : collection) {
+    <span class="cm">// body</span>
+}</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>forEach lambda (Java 8)</h4>
+    <div class="code-wrap"><pre>list.<span class="fn">forEach</span>(x <span class="op">-&gt;</span> {
+    <span class="cm">// body</span>
+});</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>Stream pipeline (Java 8)</h4>
+    <div class="code-wrap"><pre>list.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(pred)
+    .<span class="fn">map</span>(fn)
+    .<span class="fn">forEach</span>(action);</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>IntStream.range (Java 8)</h4>
+    <div class="code-wrap"><pre>IntStream.<span class="fn">range</span>(<span class="nm">0</span>, n)
+    .<span class="fn">forEach</span>(i <span class="op">-&gt;</span> {});</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>Stream.iterate (Java 9)</h4>
+    <div class="code-wrap"><pre>Stream.<span class="fn">iterate</span>(seed, cond, next)
+    .<span class="fn">forEach</span>(action);</pre></div>
+  </div>
+  <div class="cheat-card">
+    <h4>break / continue</h4>
+    <div class="code-wrap"><pre><span class="kw">break</span>;        <span class="cm">// exit loop</span>
+<span class="kw">continue</span>;     <span class="cm">// skip to next</span>
+<span class="kw">break</span> label;  <span class="cm">// exit outer</span></pre></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── UTILITIES ──────────────────────────────────────────
+function jumpTo(id) {
+  document.querySelector(id).scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  const header = card.querySelector('.card-header');
+  const body = card.querySelector('.card-body');
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── TAB SYSTEM: event delegation, wired on DOMContentLoaded ──────────────────
+// No inline onclick. Each .tab-btn has data-panel and data-container attributes.
+function activateTab(btn) {
+  const panelId     = btn.dataset.panel;
+  const containerId = btn.dataset.container;
+  const group       = btn.dataset.group;
+  if (!panelId || !containerId) return;
+
+  // 1. Hide all sibling panels (direct children only, by iterating children array)
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const kids = Array.from(container.children);
+  kids.forEach(k => k.classList.remove('active'));
+
+  // 2. Deactivate all buttons in the same group
+  if (group) {
+    document.querySelectorAll('[data-group="' + group + '"]')
+            .forEach(b => b.classList.remove('active'));
+  }
+
+  // 3. Show the target panel
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  panel.classList.add('active');
+
+  // 4. Mark this button active
+  btn.classList.add('active');
+
+  // 5. Build every tracer inside this panel (always auto-open)
+  panel.querySelectorAll('.tracer-panel[id]').forEach(function(t) {
+    buildTracer(t.id);
+  });
+}
+
+// Wire up tabs + auto-build tracers for initially-active panels
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.tab-btn[data-panel]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab(btn);
+    });
+  });
+  // Build tracers in all panels that are active on page load
+  document.querySelectorAll('.tab-panel.active .tracer-panel[id]').forEach(function(t) {
+    buildTracer(t.id);
+  });
+});
+
+function showOutput(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (el.style.display === 'block') {
+    // Reset: hide output and restore Run button
+    el.style.display = 'none';
+    if (btn) { btn.textContent = '▶ Run'; btn.style.color = ''; }
+  } else {
+    // Run: show output and change button to Reset
+    el.style.display = 'block';
+    if (btn) { btn.textContent = '↺ Reset'; btn.style.color = 'var(--yellow)'; }
+  }
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText);
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy', 1500);
+}
+
+// ── FADE-IN OBSERVER ──────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// ── CODE TRACERS ──────────────────────────────────────
+// Each tracer-panel ID maps to the specific example shown in THAT tab.
+// Tabs without a tracer (mod-*) only have code+output; tracer tabs have their own config.
+
+const kw = s => `<span class="kw">${s}</span>`;
+const tp = s => `<span class="tp">${s}</span>`;
+const nm = s => `<span class="nm">${s}</span>`;
+const st = s => `<span class="st">${s}</span>`;
+const fn = s => `<span class="fn">${s}</span>`;
+const cm = s => `<span class="cm">${s}</span>`;
+const op = s => `<span class="op">${s}</span>`;
+
+const tracerConfigs = {
+
+  // ── FOR LOOP TRACERS ────────────────────────────────
+  'tracer-for-basic': {
+    title: 'Basic for loop — counting 0 to 4',
+    lines: [
+      `${kw('for')} (${tp('int')} i ${op('=')} ${nm('0')}; i ${op('<')} ${nm('5')}; i${op('++')}) {`,
+      `    System.out.${fn('println')}(${st('"Iteration: "')} ${op('+')} i);`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{i:0}, log:'Init i=0 → check 0&lt;5 ✓ → enter body'},
+      {line:1, vars:{i:0}, log:'📤 Output: <b>Iteration: 0</b>'},
+      {line:2, vars:{i:1}, log:'i++ → i=1 → check 1&lt;5 ✓'},
+      {line:1, vars:{i:1}, log:'📤 Output: <b>Iteration: 1</b>'},
+      {line:2, vars:{i:2}, log:'i++ → i=2 → check 2&lt;5 ✓'},
+      {line:1, vars:{i:2}, log:'📤 Output: <b>Iteration: 2</b>'},
+      {line:2, vars:{i:3}, log:'i++ → i=3 → check 3&lt;5 ✓'},
+      {line:1, vars:{i:3}, log:'📤 Output: <b>Iteration: 3</b>'},
+      {line:2, vars:{i:4}, log:'i++ → i=4 → check 4&lt;5 ✓'},
+      {line:1, vars:{i:4}, log:'📤 Output: <b>Iteration: 4</b>'},
+      {line:2, vars:{i:5}, log:'i++ → i=5 → check 5&lt;5 ✗ → 🛑 EXIT'},
+    ]
+  },
+
+  'tracer-for-nested': {
+    title: 'Nested for loops — 3×3 table',
+    lines: [
+      `${kw('for')} (${tp('int')} i ${op('=')} ${nm('1')}; i ${op('<=')} ${nm('3')}; i${op('++')}) {`,
+      `    ${kw('for')} (${tp('int')} j ${op('=')} ${nm('1')}; j ${op('<=')} ${nm('3')}; j${op('++')}) {`,
+      `        System.out.${fn('printf')}(${st('"%4d"')}, i ${op('*')} j);`,
+      `    }`,
+      `    System.out.${fn('println')}();`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{i:1,j:'—'}, log:'Outer loop: i=1 → check 1&lt;=3 ✓'},
+      {line:1, vars:{i:1,j:1},   log:'Inner loop: j=1 → check 1&lt;=3 ✓'},
+      {line:2, vars:{i:1,j:1},   log:'📤 printf: 1×1 = <b>1</b>'},
+      {line:3, vars:{i:1,j:2},   log:'j++ → j=2 → check 2&lt;=3 ✓'},
+      {line:2, vars:{i:1,j:2},   log:'📤 printf: 1×2 = <b>2</b>'},
+      {line:3, vars:{i:1,j:3},   log:'j++ → j=3 → check 3&lt;=3 ✓'},
+      {line:2, vars:{i:1,j:3},   log:'📤 printf: 1×3 = <b>3</b>'},
+      {line:3, vars:{i:1,j:4},   log:'j++ → j=4 → check 4&lt;=3 ✗ → inner EXIT'},
+      {line:4, vars:{i:1,j:4},   log:'📤 println() → newline'},
+      {line:5, vars:{i:2,j:4},   log:'i++ → i=2 → check 2&lt;=3 ✓'},
+      {line:1, vars:{i:2,j:1},   log:'Inner loop reset: j=1 → check 1&lt;=3 ✓'},
+      {line:2, vars:{i:2,j:1},   log:'📤 printf: 2×1 = <b>2</b>'},
+      {line:3, vars:{i:2,j:2},   log:'j++ → j=2 → check 2&lt;=3 ✓'},
+      {line:2, vars:{i:2,j:2},   log:'📤 printf: 2×2 = <b>4</b>'},
+      {line:3, vars:{i:2,j:3},   log:'j++ → j=3 → check 3&lt;=3 ✓'},
+      {line:2, vars:{i:2,j:3},   log:'📤 printf: 2×3 = <b>6</b>'},
+      {line:3, vars:{i:2,j:4},   log:'j++ → j=4 → inner EXIT'},
+      {line:4, vars:{i:2,j:4},   log:'📤 println() → newline'},
+      {line:5, vars:{i:3,j:4},   log:'i++ → i=3 → check 3&lt;=3 ✓'},
+      {line:1, vars:{i:3,j:1},   log:'Inner loop reset: j=1'},
+      {line:2, vars:{i:3,j:1},   log:'📤 printf: 3×1 = <b>3</b>'},
+      {line:3, vars:{i:3,j:2},   log:'j++ → j=2'},
+      {line:2, vars:{i:3,j:2},   log:'📤 printf: 3×2 = <b>6</b>'},
+      {line:3, vars:{i:3,j:3},   log:'j++ → j=3'},
+      {line:2, vars:{i:3,j:3},   log:'📤 printf: 3×3 = <b>9</b>'},
+      {line:3, vars:{i:3,j:4},   log:'j++ → j=4 → inner EXIT'},
+      {line:4, vars:{i:3,j:4},   log:'📤 println() → newline'},
+      {line:5, vars:{i:4,j:4},   log:'i++ → i=4 → check 4&lt;=3 ✗ → 🛑 Outer EXIT'},
+    ]
+  },
+
+  'tracer-for-multi': {
+    title: 'Multi-variable for — i from 0, j from 10',
+    lines: [
+      `${kw('for')} (${tp('int')} i${op('=')}${nm('0')}, j${op('=')}${nm('10')}; i ${op('<')} j; i${op('++')}, j${op('--')}) {`,
+      `    System.out.${fn('println')}(${st('"i="')} ${op('+')} i ${op('+')} ${st('"  j="')} ${op('+')} j);`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{i:0,j:10}, log:'Init i=0, j=10 → check 0&lt;10 ✓'},
+      {line:1, vars:{i:0,j:10}, log:'📤 Output: <b>i=0  j=10</b>'},
+      {line:2, vars:{i:1,j:9},  log:'i++ → 1, j-- → 9 → check 1&lt;9 ✓'},
+      {line:1, vars:{i:1,j:9},  log:'📤 Output: <b>i=1  j=9</b>'},
+      {line:2, vars:{i:2,j:8},  log:'i++ → 2, j-- → 8 → check 2&lt;8 ✓'},
+      {line:1, vars:{i:2,j:8},  log:'📤 Output: <b>i=2  j=8</b>'},
+      {line:2, vars:{i:3,j:7},  log:'i++ → 3, j-- → 7 → check 3&lt;7 ✓'},
+      {line:1, vars:{i:3,j:7},  log:'📤 Output: <b>i=3  j=7</b>'},
+      {line:2, vars:{i:4,j:6},  log:'i++ → 4, j-- → 6 → check 4&lt;6 ✓'},
+      {line:1, vars:{i:4,j:6},  log:'📤 Output: <b>i=4  j=6</b>'},
+      {line:2, vars:{i:5,j:5},  log:'i++ → 5, j-- → 5 → check 5&lt;5 ✗ → 🛑 EXIT'},
+    ]
+  },
+
+  'tracer-for-label': {
+    title: 'Labeled break — exits outer loop at [1,1]',
+    lines: [
+      `${fn('outer')}:`,
+      `${kw('for')} (${tp('int')} i${op('=')}${nm('0')}; i${op('<')}${nm('3')}; i${op('++')}) {`,
+      `    ${kw('for')} (${tp('int')} j${op('=')}${nm('0')}; j${op('<')}${nm('3')}; j${op('++')}) {`,
+      `        ${kw('if')} (i${op('==')}${nm('1')} ${op('&&')} j${op('==')}${nm('1')}) ${kw('break')} ${fn('outer')};`,
+      `        System.out.${fn('println')}(${st('"["')}${op('+')}i${op('+')}${st('","')}${op('+')}j${op('+')}${st('"]"')});`,
+      `    }`,
+      `}`
+    ],
+    steps: [
+      {line:1, vars:{i:0,j:'—'}, log:'Outer: i=0 → check 0&lt;3 ✓'},
+      {line:2, vars:{i:0,j:0},   log:'Inner: j=0 → check 0&lt;3 ✓'},
+      {line:3, vars:{i:0,j:0},   log:'if (0==1 &amp;&amp; 0==1) → false, no break'},
+      {line:4, vars:{i:0,j:0},   log:'📤 Output: <b>[0,0]</b>'},
+      {line:5, vars:{i:0,j:1},   log:'j++ → j=1 → check 1&lt;3 ✓'},
+      {line:3, vars:{i:0,j:1},   log:'if (0==1 &amp;&amp; 1==1) → false'},
+      {line:4, vars:{i:0,j:1},   log:'📤 Output: <b>[0,1]</b>'},
+      {line:5, vars:{i:0,j:2},   log:'j++ → j=2 → check 2&lt;3 ✓'},
+      {line:3, vars:{i:0,j:2},   log:'if (0==1 &amp;&amp; 2==1) → false'},
+      {line:4, vars:{i:0,j:2},   log:'📤 Output: <b>[0,2]</b>'},
+      {line:5, vars:{i:0,j:3},   log:'j++ → j=3 → check 3&lt;3 ✗ → inner exit'},
+      {line:6, vars:{i:1,j:3},   log:'i++ → i=1 → check 1&lt;3 ✓'},
+      {line:2, vars:{i:1,j:0},   log:'Inner reset: j=0 → check 0&lt;3 ✓'},
+      {line:3, vars:{i:1,j:0},   log:'if (1==1 &amp;&amp; 0==1) → false'},
+      {line:4, vars:{i:1,j:0},   log:'📤 Output: <b>[1,0]</b>'},
+      {line:5, vars:{i:1,j:1},   log:'j++ → j=1 → check 1&lt;3 ✓'},
+      {line:3, vars:{i:1,j:1},   log:'if (1==1 &amp;&amp; 1==1) → <b>TRUE!</b>'},
+      {line:3, vars:{i:1,j:1},   log:'🛑 <b>break outer</b> — exits BOTH loops immediately!'},
+    ]
+  },
+
+  // ── WHILE LOOP TRACERS ──────────────────────────────
+  'tracer-while-basic': {
+    title: 'while loop — count 1 to 5',
+    lines: [
+      `${tp('int')} count ${op('=')} ${nm('1')};`,
+      `${kw('while')} (count ${op('<=')} ${nm('5')}) {`,
+      `    System.out.${fn('println')}(${st('"Count: "')} ${op('+')} count);`,
+      `    count${op('++')};`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{count:1}, log:'Init count=1'},
+      {line:1, vars:{count:1}, log:'Check: 1&lt;=5 ✓ → enter body'},
+      {line:2, vars:{count:1}, log:'📤 Output: <b>Count: 1</b>'},
+      {line:3, vars:{count:2}, log:'count++ → count=2'},
+      {line:1, vars:{count:2}, log:'Check: 2&lt;=5 ✓'},
+      {line:2, vars:{count:2}, log:'📤 Output: <b>Count: 2</b>'},
+      {line:3, vars:{count:3}, log:'count++ → count=3'},
+      {line:1, vars:{count:3}, log:'Check: 3&lt;=5 ✓'},
+      {line:2, vars:{count:3}, log:'📤 Output: <b>Count: 3</b>'},
+      {line:3, vars:{count:4}, log:'count++ → count=4'},
+      {line:1, vars:{count:4}, log:'Check: 4&lt;=5 ✓'},
+      {line:2, vars:{count:4}, log:'📤 Output: <b>Count: 4</b>'},
+      {line:3, vars:{count:5}, log:'count++ → count=5'},
+      {line:1, vars:{count:5}, log:'Check: 5&lt;=5 ✓'},
+      {line:2, vars:{count:5}, log:'📤 Output: <b>Count: 5</b>'},
+      {line:3, vars:{count:6}, log:'count++ → count=6'},
+      {line:1, vars:{count:6}, log:'Check: 6&lt;=5 ✗ → 🛑 EXIT'},
+    ]
+  },
+
+  'tracer-while-input': {
+    title: 'Sentinel while — input: 3, 7, 2, -1',
+    lines: [
+      `${tp('int')} sum ${op('=')} ${nm('0')};`,
+      `${tp('int')} input ${op('=')} nextInt(); ${cm('// prime: 3')}`,
+      `${kw('while')} (input ${op('!=')} ${nm('-1')}) {`,
+      `    sum ${op('+=')} input;`,
+      `    input ${op('=')} nextInt();`,
+      `}`,
+      `System.out.${fn('println')}(${st('"Sum = "')} ${op('+')} sum);`
+    ],
+    steps: [
+      {line:0, vars:{sum:0, input:'—'},  log:'Init sum=0'},
+      {line:1, vars:{sum:0, input:3},    log:'Read first input: 3 (prime the pump)'},
+      {line:2, vars:{sum:0, input:3},    log:'Check: 3 != -1 ✓ → enter body'},
+      {line:3, vars:{sum:3, input:3},    log:'sum += 3 → sum=3'},
+      {line:4, vars:{sum:3, input:7},    log:'Read next input: 7'},
+      {line:2, vars:{sum:3, input:7},    log:'Check: 7 != -1 ✓'},
+      {line:3, vars:{sum:10, input:7},   log:'sum += 7 → sum=10'},
+      {line:4, vars:{sum:10, input:2},   log:'Read next input: 2'},
+      {line:2, vars:{sum:10, input:2},   log:'Check: 2 != -1 ✓'},
+      {line:3, vars:{sum:12, input:2},   log:'sum += 2 → sum=12'},
+      {line:4, vars:{sum:12, input:-1},  log:'Read next input: -1 (sentinel!)'},
+      {line:2, vars:{sum:12, input:-1},  log:'Check: -1 != -1 ✗ → 🛑 EXIT'},
+      {line:6, vars:{sum:12, input:-1},  log:'📤 Output: <b>Sum = 12</b>'},
+    ]
+  },
+
+  'tracer-while-infinite': {
+    title: 'Infinite while + break — stops at n==4',
+    lines: [
+      `${tp('int')} n ${op('=')} ${nm('1')};`,
+      `${kw('while')} (${kw('true')}) {`,
+      `    System.out.${fn('println')}(n);`,
+      `    ${kw('if')} (n ${op('==')} ${nm('4')}) ${kw('break')};`,
+      `    n${op('++')};`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{n:1}, log:'Init n=1'},
+      {line:1, vars:{n:1}, log:'while(true) — always enters body'},
+      {line:2, vars:{n:1}, log:'📤 Output: <b>1</b>'},
+      {line:3, vars:{n:1}, log:'if (1==4) → false, no break'},
+      {line:4, vars:{n:2}, log:'n++ → n=2'},
+      {line:1, vars:{n:2}, log:'while(true) → enter body'},
+      {line:2, vars:{n:2}, log:'📤 Output: <b>2</b>'},
+      {line:3, vars:{n:2}, log:'if (2==4) → false'},
+      {line:4, vars:{n:3}, log:'n++ → n=3'},
+      {line:1, vars:{n:3}, log:'while(true) → enter body'},
+      {line:2, vars:{n:3}, log:'📤 Output: <b>3</b>'},
+      {line:3, vars:{n:3}, log:'if (3==4) → false'},
+      {line:4, vars:{n:4}, log:'n++ → n=4'},
+      {line:1, vars:{n:4}, log:'while(true) → enter body'},
+      {line:2, vars:{n:4}, log:'📤 Output: <b>4</b>'},
+      {line:3, vars:{n:4}, log:'if (4==4) → <b>TRUE</b> → 🛑 break!'},
+    ]
+  },
+
+  // ── DO-WHILE TRACERS ────────────────────────────────
+  'tracer-dw-basic': {
+    title: 'do-while — runs at least once, even if false',
+    lines: [
+      `${tp('int')} num ${op('=')} ${nm('1')};`,
+      `${kw('do')} {`,
+      `    System.out.${fn('println')}(${st('"Value: "')} ${op('+')} num);`,
+      `    num${op('++')};`,
+      `} ${kw('while')} (num ${op('<=')} ${nm('3')});`,
+      `${cm('// x=99: condition false but runs once:')}`,
+      `${tp('int')} x ${op('=')} ${nm('99')};`,
+      `${kw('do')} { System.out.${fn('println')}(${st('"Runs once: x="')}${op('+')}x); }`,
+      `${kw('while')} (x ${op('<')} ${nm('10')}); ${cm('// false! but body ran once')}`
+    ],
+    steps: [
+      {line:0, vars:{num:1,x:'—'}, log:'Init num=1'},
+      {line:1, vars:{num:1,x:'—'}, log:'Enter do body — ⚠️ no condition check yet!'},
+      {line:2, vars:{num:1,x:'—'}, log:'📤 Output: <b>Value: 1</b>'},
+      {line:3, vars:{num:2,x:'—'}, log:'num++ → num=2'},
+      {line:4, vars:{num:2,x:'—'}, log:'Check AFTER body: 2&lt;=3 ✓ → loop back'},
+      {line:2, vars:{num:2,x:'—'}, log:'📤 Output: <b>Value: 2</b>'},
+      {line:3, vars:{num:3,x:'—'}, log:'num++ → num=3'},
+      {line:4, vars:{num:3,x:'—'}, log:'Check AFTER body: 3&lt;=3 ✓ → loop back'},
+      {line:2, vars:{num:3,x:'—'}, log:'📤 Output: <b>Value: 3</b>'},
+      {line:3, vars:{num:4,x:'—'}, log:'num++ → num=4'},
+      {line:4, vars:{num:4,x:'—'}, log:'Check AFTER body: 4&lt;=3 ✗ → 🛑 EXIT first loop'},
+      {line:6, vars:{num:4,x:99},  log:'Init x=99'},
+      {line:7, vars:{num:4,x:99},  log:'Enter do body — no check (even though 99&lt;10 is false!)'},
+      {line:7, vars:{num:4,x:99},  log:'📤 Output: <b>Runs once: x=99</b>'},
+      {line:8, vars:{num:4,x:99},  log:'Check: 99&lt;10 ✗ → 🛑 EXIT — body ran exactly once!'},
+    ]
+  },
+
+  'tracer-dw-menu': {
+    title: 'do-while menu — input validation pattern',
+    lines: [
+      `${tp('int')} choice;`,
+      `${kw('do')} {`,
+      `    System.out.${fn('println')}(${st('"1.Start 2.Help 3.Exit"')});`,
+      `    choice ${op('=')} nextInt();`,
+      `    ${kw('if')} (choice ${op('<')} ${nm('1')} ${op('||')} choice ${op('>')} ${nm('3')})`,
+      `        System.out.${fn('println')}(${st('"Invalid. Try again."')});`,
+      `} ${kw('while')} (choice ${op('!=')} ${nm('3')});`,
+      `System.out.${fn('println')}(${st('"Goodbye!"')});`
+    ],
+    steps: [
+      {line:0, vars:{choice:'—'}, log:'Declare choice (unset)'},
+      {line:1, vars:{choice:'—'}, log:'Enter do body (always runs first!)'},
+      {line:2, vars:{choice:'—'}, log:'📤 Print menu'},
+      {line:3, vars:{choice:5},   log:'User enters: 5'},
+      {line:4, vars:{choice:5},   log:'if (5&lt;1 || 5&gt;3) → true'},
+      {line:5, vars:{choice:5},   log:'📤 Output: <b>Invalid. Try again.</b>'},
+      {line:6, vars:{choice:5},   log:'Check: 5 != 3 ✓ → loop back'},
+      {line:2, vars:{choice:5},   log:'📤 Print menu again'},
+      {line:3, vars:{choice:2},   log:'User enters: 2'},
+      {line:4, vars:{choice:2},   log:'if (2&lt;1 || 2&gt;3) → false, valid'},
+      {line:6, vars:{choice:2},   log:'Check: 2 != 3 ✓ → loop back'},
+      {line:2, vars:{choice:2},   log:'📤 Print menu again'},
+      {line:3, vars:{choice:3},   log:'User enters: 3'},
+      {line:4, vars:{choice:3},   log:'if (3&lt;1 || 3&gt;3) → false, valid'},
+      {line:6, vars:{choice:3},   log:'Check: 3 != 3 ✗ → 🛑 EXIT'},
+      {line:7, vars:{choice:3},   log:'📤 Output: <b>Goodbye!</b>'},
+    ]
+  },
+
+  // ── ENHANCED FOR TRACERS ─────────────────────────────
+  'tracer-ef-array': {
+    title: 'for-each over int array',
+    lines: [
+      `${tp('int')}[] nums ${op('=')} {${nm('10')}, ${nm('20')}, ${nm('30')}, ${nm('40')}, ${nm('50')}};`,
+      `${kw('for')} (${tp('int')} n : nums) {`,
+      `    System.out.${fn('println')}(n);`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{nums:'[10,20,30,40,50]', n:'—', idx:'—'}, log:'Create array of 5 ints'},
+      {line:1, vars:{nums:'[10,20,30,40,50]', idx:0, n:10},    log:'Iterator → idx=0, n=10 → hasNext ✓'},
+      {line:2, vars:{nums:'[10,20,30,40,50]', idx:0, n:10},    log:'📤 Output: <b>10</b>'},
+      {line:3, vars:{nums:'[10,20,30,40,50]', idx:1, n:20},    log:'Advance → idx=1, n=20 → hasNext ✓'},
+      {line:2, vars:{nums:'[10,20,30,40,50]', idx:1, n:20},    log:'📤 Output: <b>20</b>'},
+      {line:3, vars:{nums:'[10,20,30,40,50]', idx:2, n:30},    log:'Advance → idx=2, n=30 → hasNext ✓'},
+      {line:2, vars:{nums:'[10,20,30,40,50]', idx:2, n:30},    log:'📤 Output: <b>30</b>'},
+      {line:3, vars:{nums:'[10,20,30,40,50]', idx:3, n:40},    log:'Advance → idx=3, n=40 → hasNext ✓'},
+      {line:2, vars:{nums:'[10,20,30,40,50]', idx:3, n:40},    log:'📤 Output: <b>40</b>'},
+      {line:3, vars:{nums:'[10,20,30,40,50]', idx:4, n:50},    log:'Advance → idx=4, n=50 → hasNext ✓'},
+      {line:2, vars:{nums:'[10,20,30,40,50]', idx:4, n:50},    log:'📤 Output: <b>50</b>'},
+      {line:3, vars:{nums:'[10,20,30,40,50]', idx:5, n:'—'},   log:'Advance → idx=5 → hasNext ✗ → 🛑 EXIT'},
+    ]
+  },
+
+  'tracer-ef-list': {
+    title: 'for-each over List&lt;String&gt;',
+    lines: [
+      `List&lt;String&gt; fruits ${op('=')} List.${fn('of')}(${st('"Apple"')}, ${st('"Banana"')}, ${st('"Cherry"')});`,
+      `${kw('for')} (String fruit : fruits) {`,
+      `    System.out.${fn('println')}(fruit.${fn('toUpperCase')}());`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'—'}, log:'Create immutable List of 3 strings'},
+      {line:1, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'Apple'},   log:'Iterator.next() → fruit="Apple"'},
+      {line:2, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'Apple'},   log:'📤 Output: <b>APPLE</b>'},
+      {line:1, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'Banana'},  log:'Iterator.next() → fruit="Banana"'},
+      {line:2, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'Banana'},  log:'📤 Output: <b>BANANA</b>'},
+      {line:1, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'Cherry'},  log:'Iterator.next() → fruit="Cherry"'},
+      {line:2, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'Cherry'},  log:'📤 Output: <b>CHERRY</b>'},
+      {line:1, vars:{fruits:'[Apple,Banana,Cherry]', fruit:'—'},       log:'Iterator.hasNext() → false → 🛑 EXIT'},
+    ]
+  },
+
+  'tracer-ef-map': {
+    title: 'for-each over Map entrySet()',
+    lines: [
+      `Map&lt;String,Integer&gt; scores ${op('=')} Map.${fn('of')}(...);`,
+      `${kw('for')} (Map.Entry&lt;String,Integer&gt; e : scores.${fn('entrySet')}()) {`,
+      `    System.out.${fn('printf')}(${st('"%s → %d%n"')}, e.${fn('getKey')}(), e.${fn('getValue')}());`,
+      `}`
+    ],
+    steps: [
+      {line:0, vars:{e:'—', key:'—', val:'—'}, log:'Create Map with 3 entries'},
+      {line:1, vars:{e:'Entry', key:'Alice', val:95}, log:'Iterator → Entry(Alice, 95)'},
+      {line:2, vars:{e:'Entry', key:'Alice', val:95}, log:'📤 Output: <b>Alice → 95</b>'},
+      {line:1, vars:{e:'Entry', key:'Bob', val:82},   log:'Iterator → Entry(Bob, 82)'},
+      {line:2, vars:{e:'Entry', key:'Bob', val:82},   log:'📤 Output: <b>Bob → 82</b>'},
+      {line:1, vars:{e:'Entry', key:'Carol', val:90}, log:'Iterator → Entry(Carol, 90)'},
+      {line:2, vars:{e:'Entry', key:'Carol', val:90}, log:'📤 Output: <b>Carol → 90</b>'},
+      {line:1, vars:{e:'—', key:'—', val:'—'},        log:'Iterator.hasNext() → false → 🛑 EXIT'},
+    ]
+  },
+
+  // ── MODERN JAVA TRACERS ─────────────────────────────
+  'tracer-mod-foreach': {
+    title: 'forEach lambda — Java 8',
+    lines: [
+      'List&lt;String&gt; names = List.<span class="fn">of</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>);',
+      'names.<span class="fn">forEach</span>(name <span class="op">-&gt;</span>',
+      '    System.out.<span class="fn">println</span>(<span class="st">"Hello, "</span> <span class="op">+</span> name)',
+      ');',
+      '<span class="cm">// Internal iterator — no index variable</span>',
+      'names.<span class="fn">forEach</span>(System.out<span class="op">::</span>println);'
+    ],
+    steps: [
+      {line:0, vars:{names:'[Alice,Bob,Carol]', name:'—'}, log:'Create List of 3 strings'},
+      {line:1, vars:{names:'[Alice,Bob,Carol]', name:'Alice'}, log:'Internal iterator → name="Alice"'},
+      {line:2, vars:{names:'[Alice,Bob,Carol]', name:'Alice'}, log:'📤 Output: <b>Hello, Alice</b>'},
+      {line:1, vars:{names:'[Alice,Bob,Carol]', name:'Bob'},   log:'Internal iterator → name="Bob"'},
+      {line:2, vars:{names:'[Alice,Bob,Carol]', name:'Bob'},   log:'📤 Output: <b>Hello, Bob</b>'},
+      {line:1, vars:{names:'[Alice,Bob,Carol]', name:'Carol'}, log:'Internal iterator → name="Carol"'},
+      {line:2, vars:{names:'[Alice,Bob,Carol]', name:'Carol'}, log:'📤 Output: <b>Hello, Carol</b>'},
+      {line:3, vars:{names:'[Alice,Bob,Carol]', name:'—'},     log:'No more elements → forEach complete'},
+      {line:5, vars:{names:'[Alice,Bob,Carol]', name:'Alice'}, log:'Method ref forEach → name="Alice" → 📤 <b>Alice</b>'},
+      {line:5, vars:{names:'[Alice,Bob,Carol]', name:'Bob'},   log:'Method ref forEach → name="Bob"   → 📤 <b>Bob</b>'},
+      {line:5, vars:{names:'[Alice,Bob,Carol]', name:'Carol'}, log:'Method ref forEach → name="Carol" → 📤 <b>Carol</b>'},
+      {line:5, vars:{names:'[Alice,Bob,Carol]', name:'—'},     log:'🛑 forEach complete — all 6 lines printed'},
+    ]
+  },
+
+  'tracer-mod-stream': {
+    title: 'Stream pipeline — filter → map → collect',
+    lines: [
+      'List&lt;Integer&gt; numbers = List.<span class="fn">of</span>(1..10);',
+      'List&lt;Integer&gt; result = numbers.<span class="fn">stream</span>()',
+      '    .<span class="fn">filter</span>(n <span class="op">-&gt;</span> n <span class="op">%</span> 2 <span class="op">==</span> 0)   <span class="cm">// keep evens</span>',
+      '    .<span class="fn">map</span>(n <span class="op">-&gt;</span> n <span class="op">*</span> n)             <span class="cm">// square them</span>',
+      '    .<span class="fn">collect</span>(Collectors.<span class="fn">toList</span>());',
+      'System.out.<span class="fn">println</span>(result);',
+      '<span class="tp">int</span> sum = numbers.<span class="fn">stream</span>().<span class="fn">reduce</span>(0, Integer<span class="op">::</span>sum);',
+      'System.out.<span class="fn">println</span>(<span class="st">"Sum = "</span> <span class="op">+</span> sum);'
+    ],
+    steps: [
+      {line:0,  vars:{n:'—', result:'[]',       sum:'—'}, log:'Source list: [1,2,3,4,5,6,7,8,9,10]'},
+      {line:2,  vars:{n:1,   result:'[]',       sum:'—'}, log:'filter(1): 1%2=1 ≠ 0 → ✗ discard'},
+      {line:2,  vars:{n:2,   result:'[]',       sum:'—'}, log:'filter(2): 2%2=0 ✓ → pass downstream'},
+      {line:3,  vars:{n:2,   result:'[]',       sum:'—'}, log:'map(2): 2×2=4 → emit 4'},
+      {line:2,  vars:{n:3,   result:'[]',       sum:'—'}, log:'filter(3): 3%2=1 → ✗ discard'},
+      {line:2,  vars:{n:4,   result:'[]',       sum:'—'}, log:'filter(4): 4%2=0 ✓ → pass'},
+      {line:3,  vars:{n:4,   result:'[]',       sum:'—'}, log:'map(4): 4×4=16 → emit 16'},
+      {line:2,  vars:{n:5,   result:'[]',       sum:'—'}, log:'filter(5): ✗ discard'},
+      {line:2,  vars:{n:6,   result:'[]',       sum:'—'}, log:'filter(6): 6%2=0 ✓ → pass'},
+      {line:3,  vars:{n:6,   result:'[]',       sum:'—'}, log:'map(6): 6×6=36 → emit 36'},
+      {line:2,  vars:{n:7,   result:'[]',       sum:'—'}, log:'filter(7): ✗ discard'},
+      {line:2,  vars:{n:8,   result:'[]',       sum:'—'}, log:'filter(8): 8%2=0 ✓ → pass'},
+      {line:3,  vars:{n:8,   result:'[]',       sum:'—'}, log:'map(8): 8×8=64 → emit 64'},
+      {line:2,  vars:{n:9,   result:'[]',       sum:'—'}, log:'filter(9): ✗ discard'},
+      {line:2,  vars:{n:10,  result:'[]',       sum:'—'}, log:'filter(10): 10%2=0 ✓ → pass'},
+      {line:3,  vars:{n:10,  result:'[]',       sum:'—'}, log:'map(10): 10×10=100 → emit 100'},
+      {line:4,  vars:{n:'—', result:'[4,16,36,64,100]', sum:'—'}, log:'collect() → result=[4,16,36,64,100]'},
+      {line:5,  vars:{n:'—', result:'[4,16,36,64,100]', sum:'—'}, log:'📤 Output: <b>[4, 16, 36, 64, 100]</b>'},
+      {line:6,  vars:{n:'—', result:'[4,16,36,64,100]', sum:55},  log:'reduce(0, sum): 0+1+2+…+10 = 55'},
+      {line:7,  vars:{n:'—', result:'[4,16,36,64,100]', sum:55},  log:'📤 Output: <b>Sum = 55</b>'},
+    ]
+  },
+
+  'tracer-mod-intstream': {
+    title: 'IntStream.range(0,5) — functional for-loop',
+    lines: [
+      'IntStream.<span class="fn">range</span>(0, 5)',
+      '    .<span class="fn">forEach</span>(i <span class="op">-&gt;</span> System.out.<span class="fn">println</span>(<span class="st">"i = "</span> <span class="op">+</span> i));',
+      '<span class="cm">// rangeClosed(1,10) includes upper bound</span>',
+      '<span class="tp">int</span> sumOfFirst10 = IntStream.<span class="fn">rangeClosed</span>(1, 10).<span class="fn">sum</span>();',
+      'System.out.<span class="fn">println</span>(<span class="st">"Sum 1-10: "</span> <span class="op">+</span> sumOfFirst10);'
+    ],
+    steps: [
+      {line:0, vars:{i:'—', sumOfFirst10:'—'}, log:'IntStream.range(0,5) creates stream [0,1,2,3,4] — upper bound exclusive'},
+      {line:1, vars:{i:0,   sumOfFirst10:'—'}, log:'forEach: i=0 → 📤 Output: <b>i = 0</b>'},
+      {line:1, vars:{i:1,   sumOfFirst10:'—'}, log:'forEach: i=1 → 📤 Output: <b>i = 1</b>'},
+      {line:1, vars:{i:2,   sumOfFirst10:'—'}, log:'forEach: i=2 → 📤 Output: <b>i = 2</b>'},
+      {line:1, vars:{i:3,   sumOfFirst10:'—'}, log:'forEach: i=3 → 📤 Output: <b>i = 3</b>'},
+      {line:1, vars:{i:4,   sumOfFirst10:'—'}, log:'forEach: i=4 → 📤 Output: <b>i = 4</b>'},
+      {line:1, vars:{i:'—', sumOfFirst10:'—'}, log:'🛑 Stream exhausted — range(0,5) done'},
+      {line:3, vars:{i:'—', sumOfFirst10:'—'}, log:'rangeClosed(1,10) → stream [1,2,3,4,5,6,7,8,9,10] (inclusive)'},
+      {line:3, vars:{i:'—', sumOfFirst10:55},  log:'.sum() = 1+2+3+4+5+6+7+8+9+10 = <b>55</b>'},
+      {line:4, vars:{i:'—', sumOfFirst10:55},  log:'📤 Output: <b>Sum 1-10: 55</b>'},
+    ]
+  },
+
+  'tracer-mod-parallel': {
+    title: 'parallelStream() — ForkJoinPool execution',
+    lines: [
+      'List&lt;Integer&gt; bigList = IntStream.<span class="fn">rangeClosed</span>(1, 1_000_000)...',
+      '<span class="tp">long</span> count = bigList.<span class="fn">parallelStream</span>()',
+      '    .<span class="fn">filter</span>(n <span class="op">-&gt;</span> n <span class="op">%</span> 7 <span class="op">==</span> 0)',
+      '    .<span class="fn">count</span>();',
+      'System.out.<span class="fn">println</span>(<span class="st">"Divisible by 7: "</span> <span class="op">+</span> count);',
+      '<span class="cm">// ⚠️ Order NOT guaranteed in parallel!</span>'
+    ],
+    steps: [
+      {line:0, vars:{threads:'—', chunks:'—', count:'—'}, log:'Build source list of 1,000,000 integers'},
+      {line:1, vars:{threads:4,   chunks:4,   count:'—'}, log:'parallelStream() — ForkJoinPool splits work across CPU cores (e.g. 4 threads)'},
+      {line:2, vars:{threads:4,   chunks:4,   count:'—'}, log:'Thread 1: filters chunk [1..250k] for n%7==0 concurrently with others'},
+      {line:2, vars:{threads:4,   chunks:4,   count:'—'}, log:'Thread 2: filters chunk [250k..500k] simultaneously'},
+      {line:2, vars:{threads:4,   chunks:4,   count:'—'}, log:'Thread 3: filters chunk [500k..750k] simultaneously'},
+      {line:2, vars:{threads:4,   chunks:4,   count:'—'}, log:'Thread 4: filters chunk [750k..1M] simultaneously'},
+      {line:3, vars:{threads:4,   chunks:4,   count:'—'}, log:'count() — ForkJoin merges partial counts from all threads'},
+      {line:3, vars:{threads:4,   chunks:4,   count:142857}, log:'⌛ All threads complete → combined count = 142,857'},
+      {line:4, vars:{threads:4,   chunks:4,   count:142857}, log:'📤 Output: <b>Divisible by 7: 142857</b>'},
+      {line:5, vars:{threads:4,   chunks:4,   count:142857}, log:'⚠️ Note: element processing order was non-deterministic — only the final count is reliable'},
+    ]
+  },
+
+  'tracer-mod-records': {
+    title: 'Pattern matching in switch — Java 21',
+    lines: [
+      'List&lt;Object&gt; mixed = List.<span class="fn">of</span>(42, <span class="st">"hello"</span>, 3.14, <span class="kw">true</span>);',
+      '<span class="kw">for</span> (Object obj : mixed) {',
+      '    String desc = <span class="kw">switch</span> (obj) {',
+      '        <span class="kw">case</span> Integer i <span class="op">-&gt;</span> <span class="st">"Int: "</span> <span class="op">+</span> i;',
+      '        <span class="kw">case</span> String s  <span class="op">-&gt;</span> <span class="st">"Str: "</span> <span class="op">+</span> s;',
+      '        <span class="kw">case</span> Double d  <span class="op">-&gt;</span> <span class="st">"Dbl: "</span> <span class="op">+</span> d;',
+      '        <span class="kw">default</span>        <span class="op">-&gt;</span> <span class="st">"Other: "</span> <span class="op">+</span> obj;',
+      '    };',
+      '    System.out.<span class="fn">println</span>(desc);',
+      '}'
+    ],
+    steps: [
+      {line:0,  vars:{obj:'—',    type:'—',       desc:'—'},        log:'Create mixed List [42, "hello", 3.14, true]'},
+      {line:1,  vars:{obj:42,     type:'Integer',  desc:'—'},        log:'for-each: obj=42 (type: Integer)'},
+      {line:2,  vars:{obj:42,     type:'Integer',  desc:'—'},        log:'switch(obj) — pattern matching begins'},
+      {line:3,  vars:{obj:42,     type:'Integer',  desc:'—'},        log:'case Integer i → matches! i=42'},
+      {line:8,  vars:{obj:42,     type:'Integer',  desc:'"Int: 42"'}, log:'desc = "Int: 42"'},
+      {line:8,  vars:{obj:42,     type:'Integer',  desc:'"Int: 42"'}, log:'📤 Output: <b>Int: 42</b>'},
+      {line:1,  vars:{obj:'hello',type:'String',   desc:'—'},        log:'for-each: obj="hello" (type: String)'},
+      {line:4,  vars:{obj:'hello',type:'String',   desc:'—'},        log:'case String s → matches! s="hello"'},
+      {line:8,  vars:{obj:'hello',type:'String',   desc:'"Str: hello"'}, log:'📤 Output: <b>Str: hello</b>'},
+      {line:1,  vars:{obj:3.14,   type:'Double',   desc:'—'},        log:'for-each: obj=3.14 (type: Double)'},
+      {line:5,  vars:{obj:3.14,   type:'Double',   desc:'—'},        log:'case Double d → matches! d=3.14'},
+      {line:8,  vars:{obj:3.14,   type:'Double',   desc:'"Dbl: 3.14"'}, log:'📤 Output: <b>Dbl: 3.14</b>'},
+      {line:1,  vars:{obj:'true', type:'Boolean',  desc:'—'},        log:'for-each: obj=true (type: Boolean)'},
+      {line:6,  vars:{obj:'true', type:'Boolean',  desc:'—'},        log:'default → no specific case matched for Boolean'},
+      {line:8,  vars:{obj:'true', type:'Boolean',  desc:'"Other: true"'}, log:'📤 Output: <b>Other: true</b>'},
+      {line:9,  vars:{obj:'—',    type:'—',        desc:'—'},        log:'🛑 Iterator exhausted — loop complete'},
+    ]
+  },
+
+};
+
+// Map each tracer tab panel to the correct tracer config key
+const tracerTabMap = {
+  'for-tracer':   null,  // selector tab — shows sub-tabs below
+  'while-tracer': null,
+  'dw-tracer':    null,
+  'ef-tracer':    null,
+};
+
+// When a tracer tab is clicked, we need to show a sub-tab selector
+// Each tracer placeholder div maps directly to one config:
+// tracer-for-basic, tracer-for-nested, tracer-for-multi, tracer-for-label
+// tracer-while-basic, tracer-while-input, tracer-while-infinite
+// tracer-dw-basic, tracer-dw-menu
+// tracer-ef-array, tracer-ef-list, tracer-ef-map
+
+const tracerState = {};
+
+function buildTracer(containerId) {
+  const cfg = tracerConfigs[containerId];
+  if (!cfg) return;
+  const el = document.getElementById(containerId);
+  if (!el) return;
+
+  tracerState[containerId] = { step: 0, timer: null };
+
+  el.innerHTML = `
+    <div class="tracer-title">🔬 Code Tracer &mdash; <code style="font-size:.8rem;color:var(--yellow)">${cfg.title}</code></div>
+    <div class="tracer-controls">
+      <button class="btn-prev">◀ Prev</button>
+      <button class="btn-next">Next ▶</button>
+      <button class="btn-play">▶ Auto</button>
+      <button class="btn-reset">↺ Reset</button>
+      <span class="speed-label">Speed</span>
+      <input type="range" min="1" max="5" value="3" class="speed-slider">
+    </div>
+    <div class="tracer-body">
+      <div class="tracer-code-col"><pre class="tracer-pre"></pre></div>
+      <div class="tracer-state-col">
+        <h4>Variables</h4>
+        <div class="var-rows"></div>
+      </div>
+    </div>
+    <div class="tracer-log"></div>
+  `;
+
+  el.querySelector('.btn-prev').addEventListener('click', () => tracerStep(containerId, -1));
+  el.querySelector('.btn-next').addEventListener('click', () => tracerStep(containerId, +1));
+  el.querySelector('.btn-reset').addEventListener('click', () => tracerReset(containerId));
+  el.querySelector('.btn-play').addEventListener('click', () => tracerTogglePlay(containerId));
+
+  tracerRender(containerId);
+}
+
+function tracerRender(id) {
+  const cfg = tracerConfigs[id];
+  const st  = tracerState[id];
+  const el  = document.getElementById(id);
+  if (!cfg || !st || !el) return;
+
+  const s    = st.step;
+  const cur  = cfg.steps[s];
+  const prev = s > 0 ? cfg.steps[s - 1] : null;
+
+  const linesHtml = cfg.lines.map((lineCode, i) => {
+    const hl = (i === cur.line) ? ' highlight' : '';
+    return `<span class="line${hl}">${lineCode}</span>`;
+  }).join('\n');
+  el.querySelector('.tracer-pre').innerHTML = linesHtml;
+
+  const varHtml = Object.entries(cur.vars).map(([k, v]) => {
+    const changed = prev && String(prev.vars[k]) !== String(v);
+    return `<div class="var-row${changed ? ' changed' : ''}">
+      <span class="var-name">${k}</span><span class="var-val">${v}</span>
+    </div>`;
+  }).join('');
+  el.querySelector('.var-rows').innerHTML = varHtml;
+
+  el.querySelector('.tracer-log').innerHTML =
+    `<span class="log-out">Step ${s + 1} / ${cfg.steps.length}:</span> ${cur.log}`;
+
+  el.querySelector('.btn-prev').disabled = (s === 0);
+  el.querySelector('.btn-next').disabled = (s === cfg.steps.length - 1);
+}
+
+function tracerStep(id, delta) {
+  const st = tracerState[id];
+  if (!st) return;
+  const next = st.step + delta;
+  if (next >= 0 && next < tracerConfigs[id].steps.length) {
+    st.step = next;
+    tracerRender(id);
+  }
+}
+
+function tracerReset(id) {
+  const st = tracerState[id];
+  if (!st) return;
+  if (st.timer) { clearInterval(st.timer); st.timer = null; }
+  st.step = 0;
+  tracerRender(id);
+  const el = document.getElementById(id);
+  if (el) el.querySelector('.btn-play').textContent = '▶ Auto';
+}
+
+function tracerTogglePlay(id) {
+  const cfg = tracerConfigs[id];
+  const st  = tracerState[id];
+  const el  = document.getElementById(id);
+  if (!cfg || !st || !el) return;
+  if (st.timer) {
+    clearInterval(st.timer); st.timer = null;
+    el.querySelector('.btn-play').textContent = '▶ Auto';
+    return;
+  }
+  el.querySelector('.btn-play').textContent = '⏸ Pause';
+  const delay = 1800 - (+el.querySelector('.speed-slider').value) * 300;
+  st.timer = setInterval(() => {
+    if (st.step < cfg.steps.length - 1) {
+      st.step++;
+      tracerRender(id);
+    } else {
+      clearInterval(st.timer); st.timer = null;
+      el.querySelector('.btn-play').textContent = '▶ Auto';
+    }
+  }, delay);
+}
+// ── THEME TOGGLE ──────────────────────────────────
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  document.querySelector('.theme-toggle').textContent = isLight ? '🌑' : '🌙';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+// Restore saved preference
+(function() {
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light');
+    const btn = document.querySelector('.theme-toggle');
+    if (btn) btn.textContent = '🌑';
+  }
+})();
+</script>
+</body>
+</html>
