@@ -1327,15 +1327,15 @@ const tracerConfigs = {
     steps: [
       {line:0, vars:{i:0}, log:'Init i=0 → check 0&lt;5 ✓ → enter body'},
       {line:1, vars:{i:0}, log:'📤 Output: <b>Iteration: 0</b>'},
-      {line:2, vars:{i:1}, log:'i++ → i=1 → check 1&lt;5 ✓'},
+      {line:0, vars:{i:1}, log:'i++ → i=1 → check 1&lt;5 ✓'},
       {line:1, vars:{i:1}, log:'📤 Output: <b>Iteration: 1</b>'},
-      {line:2, vars:{i:2}, log:'i++ → i=2 → check 2&lt;5 ✓'},
+      {line:0, vars:{i:2}, log:'i++ → i=2 → check 2&lt;5 ✓'},
       {line:1, vars:{i:2}, log:'📤 Output: <b>Iteration: 2</b>'},
-      {line:2, vars:{i:3}, log:'i++ → i=3 → check 3&lt;5 ✓'},
+      {line:0, vars:{i:3}, log:'i++ → i=3 → check 3&lt;5 ✓'},
       {line:1, vars:{i:3}, log:'📤 Output: <b>Iteration: 3</b>'},
-      {line:2, vars:{i:4}, log:'i++ → i=4 → check 4&lt;5 ✓'},
+      {line:0, vars:{i:4}, log:'i++ → i=4 → check 4&lt;5 ✓'},
       {line:1, vars:{i:4}, log:'📤 Output: <b>Iteration: 4</b>'},
-      {line:2, vars:{i:5}, log:'i++ → i=5 → check 5&lt;5 ✗ → 🛑 EXIT'},
+      {line:0, vars:{i:5}, log:'i++ → i=5 → check 5&lt;5 ✗ → 🛑 EXIT'},
     ]
   },
 
@@ -1353,31 +1353,31 @@ const tracerConfigs = {
       {line:0, vars:{i:1,j:'—'}, log:'Outer loop: i=1 → check 1&lt;=3 ✓'},
       {line:1, vars:{i:1,j:1},   log:'Inner loop: j=1 → check 1&lt;=3 ✓'},
       {line:2, vars:{i:1,j:1},   log:'📤 printf: 1×1 = <b>1</b>'},
-      {line:3, vars:{i:1,j:2},   log:'j++ → j=2 → check 2&lt;=3 ✓'},
+      {line:1, vars:{i:1,j:2},   log:'j++ → j=2 → check 2&lt;=3 ✓'},
       {line:2, vars:{i:1,j:2},   log:'📤 printf: 1×2 = <b>2</b>'},
-      {line:3, vars:{i:1,j:3},   log:'j++ → j=3 → check 3&lt;=3 ✓'},
+      {line:1, vars:{i:1,j:3},   log:'j++ → j=3 → check 3&lt;=3 ✓'},
       {line:2, vars:{i:1,j:3},   log:'📤 printf: 1×3 = <b>3</b>'},
-      {line:3, vars:{i:1,j:4},   log:'j++ → j=4 → check 4&lt;=3 ✗ → inner EXIT'},
+      {line:1, vars:{i:1,j:4},   log:'j++ → j=4 → check 4&lt;=3 ✗ → inner EXIT'},
       {line:4, vars:{i:1,j:4},   log:'📤 println() → newline'},
-      {line:5, vars:{i:2,j:4},   log:'i++ → i=2 → check 2&lt;=3 ✓'},
+      {line:0, vars:{i:2,j:4},   log:'i++ → i=2 → check 2&lt;=3 ✓'},
       {line:1, vars:{i:2,j:1},   log:'Inner loop reset: j=1 → check 1&lt;=3 ✓'},
       {line:2, vars:{i:2,j:1},   log:'📤 printf: 2×1 = <b>2</b>'},
-      {line:3, vars:{i:2,j:2},   log:'j++ → j=2 → check 2&lt;=3 ✓'},
+      {line:1, vars:{i:2,j:2},   log:'j++ → j=2 → check 2&lt;=3 ✓'},
       {line:2, vars:{i:2,j:2},   log:'📤 printf: 2×2 = <b>4</b>'},
-      {line:3, vars:{i:2,j:3},   log:'j++ → j=3 → check 3&lt;=3 ✓'},
+      {line:1, vars:{i:2,j:3},   log:'j++ → j=3 → check 3&lt;=3 ✓'},
       {line:2, vars:{i:2,j:3},   log:'📤 printf: 2×3 = <b>6</b>'},
-      {line:3, vars:{i:2,j:4},   log:'j++ → j=4 → inner EXIT'},
+      {line:1, vars:{i:2,j:4},   log:'j++ → j=4 → inner EXIT'},
       {line:4, vars:{i:2,j:4},   log:'📤 println() → newline'},
-      {line:5, vars:{i:3,j:4},   log:'i++ → i=3 → check 3&lt;=3 ✓'},
+      {line:0, vars:{i:3,j:4},   log:'i++ → i=3 → check 3&lt;=3 ✓'},
       {line:1, vars:{i:3,j:1},   log:'Inner loop reset: j=1'},
       {line:2, vars:{i:3,j:1},   log:'📤 printf: 3×1 = <b>3</b>'},
-      {line:3, vars:{i:3,j:2},   log:'j++ → j=2'},
+      {line:1, vars:{i:3,j:2},   log:'j++ → j=2'},
       {line:2, vars:{i:3,j:2},   log:'📤 printf: 3×2 = <b>6</b>'},
-      {line:3, vars:{i:3,j:3},   log:'j++ → j=3'},
+      {line:1, vars:{i:3,j:3},   log:'j++ → j=3'},
       {line:2, vars:{i:3,j:3},   log:'📤 printf: 3×3 = <b>9</b>'},
-      {line:3, vars:{i:3,j:4},   log:'j++ → j=4 → inner EXIT'},
+      {line:1, vars:{i:3,j:4},   log:'j++ → j=4 → inner EXIT'},
       {line:4, vars:{i:3,j:4},   log:'📤 println() → newline'},
-      {line:5, vars:{i:4,j:4},   log:'i++ → i=4 → check 4&lt;=3 ✗ → 🛑 Outer EXIT'},
+      {line:0, vars:{i:4,j:4},   log:'i++ → i=4 → check 4&lt;=3 ✗ → 🛑 Outer EXIT'},
     ]
   },
 
@@ -1391,15 +1391,15 @@ const tracerConfigs = {
     steps: [
       {line:0, vars:{i:0,j:10}, log:'Init i=0, j=10 → check 0&lt;10 ✓'},
       {line:1, vars:{i:0,j:10}, log:'📤 Output: <b>i=0  j=10</b>'},
-      {line:2, vars:{i:1,j:9},  log:'i++ → 1, j-- → 9 → check 1&lt;9 ✓'},
+      {line:0, vars:{i:1,j:9},  log:'i++ → 1, j-- → 9 → check 1&lt;9 ✓'},
       {line:1, vars:{i:1,j:9},  log:'📤 Output: <b>i=1  j=9</b>'},
-      {line:2, vars:{i:2,j:8},  log:'i++ → 2, j-- → 8 → check 2&lt;8 ✓'},
+      {line:0, vars:{i:2,j:8},  log:'i++ → 2, j-- → 8 → check 2&lt;8 ✓'},
       {line:1, vars:{i:2,j:8},  log:'📤 Output: <b>i=2  j=8</b>'},
-      {line:2, vars:{i:3,j:7},  log:'i++ → 3, j-- → 7 → check 3&lt;7 ✓'},
+      {line:0, vars:{i:3,j:7},  log:'i++ → 3, j-- → 7 → check 3&lt;7 ✓'},
       {line:1, vars:{i:3,j:7},  log:'📤 Output: <b>i=3  j=7</b>'},
-      {line:2, vars:{i:4,j:6},  log:'i++ → 4, j-- → 6 → check 4&lt;6 ✓'},
+      {line:0, vars:{i:4,j:6},  log:'i++ → 4, j-- → 6 → check 4&lt;6 ✓'},
       {line:1, vars:{i:4,j:6},  log:'📤 Output: <b>i=4  j=6</b>'},
-      {line:2, vars:{i:5,j:5},  log:'i++ → 5, j-- → 5 → check 5&lt;5 ✗ → 🛑 EXIT'},
+      {line:0, vars:{i:5,j:5},  log:'i++ → 5, j-- → 5 → check 5&lt;5 ✗ → 🛑 EXIT'},
     ]
   },
 
@@ -1419,18 +1419,18 @@ const tracerConfigs = {
       {line:2, vars:{i:0,j:0},   log:'Inner: j=0 → check 0&lt;3 ✓'},
       {line:3, vars:{i:0,j:0},   log:'if (0==1 &amp;&amp; 0==1) → false, no break'},
       {line:4, vars:{i:0,j:0},   log:'📤 Output: <b>[0,0]</b>'},
-      {line:5, vars:{i:0,j:1},   log:'j++ → j=1 → check 1&lt;3 ✓'},
+      {line:2, vars:{i:0,j:1},   log:'j++ → j=1 → check 1&lt;3 ✓'},
       {line:3, vars:{i:0,j:1},   log:'if (0==1 &amp;&amp; 1==1) → false'},
       {line:4, vars:{i:0,j:1},   log:'📤 Output: <b>[0,1]</b>'},
-      {line:5, vars:{i:0,j:2},   log:'j++ → j=2 → check 2&lt;3 ✓'},
+      {line:2, vars:{i:0,j:2},   log:'j++ → j=2 → check 2&lt;3 ✓'},
       {line:3, vars:{i:0,j:2},   log:'if (0==1 &amp;&amp; 2==1) → false'},
       {line:4, vars:{i:0,j:2},   log:'📤 Output: <b>[0,2]</b>'},
-      {line:5, vars:{i:0,j:3},   log:'j++ → j=3 → check 3&lt;3 ✗ → inner exit'},
-      {line:6, vars:{i:1,j:3},   log:'i++ → i=1 → check 1&lt;3 ✓'},
+      {line:2, vars:{i:0,j:3},   log:'j++ → j=3 → check 3&lt;3 ✗ → inner exit'},
+      {line:1, vars:{i:1,j:3},   log:'i++ → i=1 → check 1&lt;3 ✓'},
       {line:2, vars:{i:1,j:0},   log:'Inner reset: j=0 → check 0&lt;3 ✓'},
       {line:3, vars:{i:1,j:0},   log:'if (1==1 &amp;&amp; 0==1) → false'},
       {line:4, vars:{i:1,j:0},   log:'📤 Output: <b>[1,0]</b>'},
-      {line:5, vars:{i:1,j:1},   log:'j++ → j=1 → check 1&lt;3 ✓'},
+      {line:2, vars:{i:1,j:1},   log:'j++ → j=1 → check 1&lt;3 ✓'},
       {line:3, vars:{i:1,j:1},   log:'if (1==1 &amp;&amp; 1==1) → <b>TRUE!</b>'},
       {line:3, vars:{i:1,j:1},   log:'🛑 <b>break outer</b> — exits BOTH loops immediately!'},
     ]
@@ -1603,15 +1603,15 @@ const tracerConfigs = {
       {line:0, vars:{nums:'[10,20,30,40,50]', n:'—', idx:'—'}, log:'Create array of 5 ints'},
       {line:1, vars:{nums:'[10,20,30,40,50]', idx:0, n:10},    log:'Iterator → idx=0, n=10 → hasNext ✓'},
       {line:2, vars:{nums:'[10,20,30,40,50]', idx:0, n:10},    log:'📤 Output: <b>10</b>'},
-      {line:3, vars:{nums:'[10,20,30,40,50]', idx:1, n:20},    log:'Advance → idx=1, n=20 → hasNext ✓'},
+      {line:1, vars:{nums:'[10,20,30,40,50]', idx:1, n:20},    log:'Advance → idx=1, n=20 → hasNext ✓'},
       {line:2, vars:{nums:'[10,20,30,40,50]', idx:1, n:20},    log:'📤 Output: <b>20</b>'},
-      {line:3, vars:{nums:'[10,20,30,40,50]', idx:2, n:30},    log:'Advance → idx=2, n=30 → hasNext ✓'},
+      {line:1, vars:{nums:'[10,20,30,40,50]', idx:2, n:30},    log:'Advance → idx=2, n=30 → hasNext ✓'},
       {line:2, vars:{nums:'[10,20,30,40,50]', idx:2, n:30},    log:'📤 Output: <b>30</b>'},
-      {line:3, vars:{nums:'[10,20,30,40,50]', idx:3, n:40},    log:'Advance → idx=3, n=40 → hasNext ✓'},
+      {line:1, vars:{nums:'[10,20,30,40,50]', idx:3, n:40},    log:'Advance → idx=3, n=40 → hasNext ✓'},
       {line:2, vars:{nums:'[10,20,30,40,50]', idx:3, n:40},    log:'📤 Output: <b>40</b>'},
-      {line:3, vars:{nums:'[10,20,30,40,50]', idx:4, n:50},    log:'Advance → idx=4, n=50 → hasNext ✓'},
+      {line:1, vars:{nums:'[10,20,30,40,50]', idx:4, n:50},    log:'Advance → idx=4, n=50 → hasNext ✓'},
       {line:2, vars:{nums:'[10,20,30,40,50]', idx:4, n:50},    log:'📤 Output: <b>50</b>'},
-      {line:3, vars:{nums:'[10,20,30,40,50]', idx:5, n:'—'},   log:'Advance → idx=5 → hasNext ✗ → 🛑 EXIT'},
+      {line:1, vars:{nums:'[10,20,30,40,50]', idx:5, n:'—'},   log:'Advance → idx=5 → hasNext ✗ → 🛑 EXIT'},
     ]
   },
 
@@ -1843,6 +1843,12 @@ function buildTracer(containerId) {
         <div class="var-rows"></div>
       </div>
     </div>
+    <div class="tracer-console" style="border-top:1px solid rgba(167,139,250,.15);padding:.5rem 1rem;">
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem;">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span> Console Output
+      </div>
+      <div class="tracer-console-content" style="font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.7;color:var(--green);min-height:1.5rem;white-space:pre-wrap;background:var(--code-bg);border-radius:8px;padding:.5rem .8rem;max-height:120px;overflow-y:auto;"></div>
+    </div>
     <div class="tracer-log"></div>
   `;
 
@@ -1880,6 +1886,27 @@ function tracerRender(id) {
 
   el.querySelector('.tracer-log').innerHTML =
     `<span class="log-out">Step ${s + 1} / ${cfg.steps.length}:</span> ${cur.log}`;
+
+  // Build cumulative console output from all steps up to current
+  const consoleLines = [];
+  for (let i = 0; i <= s; i++) {
+    const stepLog = cfg.steps[i].log;
+    if (stepLog.indexOf('📤') !== -1) {
+      // Extract text inside <b>...</b> tags
+      const bMatch = stepLog.match(/<b>([\s\S]*?)<\/b>/);
+      if (bMatch) {
+        consoleLines.push(bMatch[1]);
+      }
+    }
+  }
+  const consoleEl = el.querySelector('.tracer-console-content');
+  if (consoleEl) {
+    consoleEl.textContent = consoleLines.length > 0 ? consoleLines.join('\n') : '(no output yet)';
+    if (consoleLines.length === 0) consoleEl.style.color = 'var(--muted)';
+    else consoleEl.style.color = 'var(--green)';
+    // Auto-scroll to bottom
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
 
   el.querySelector('.btn-prev').disabled = (s === 0);
   el.querySelector('.btn-next').disabled = (s === cfg.steps.length - 1);
